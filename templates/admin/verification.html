@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Admin | Verification System{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-6">
+    <div class="flex justify-between items-center">
+        <div>
+            <h1 class="text-3xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Verification System</h1>
+            <p class="text-muted text-sm mt-1">Protect your server from bots by requiring new users to verify.</p>
+        </div>
+    </div>
+
+    <form method="POST" action="{{ url_for('admin_verification') }}" class="glass-panel rounded-xl overflow-hidden">
+        <div class="p-6 space-y-8">
+            <!-- Method Selection -->
+            <div>
+                <h3 class="text-lg font-semibold text-white mb-4 border-b border-white/5 pb-2">Verification Method</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <label class="relative flex flex-col p-4 cursor-pointer rounded-xl border {% if config.method == 'button' %}border-accent bg-accent/10{% else %}border-white/10 bg-white/[0.02] hover:bg-white/[0.05]{% endif %} transition-all">
+                        <input type="radio" name="method" value="button" class="sr-only" {% if config.method == 'button' %}checked{% endif %} onchange="this.form.submit()">
+                        <div class="text-2xl mb-2">🖱️</div>
+                        <div class="font-semibold text-gray-200">Button Click</div>
+                        <div class="text-xs text-muted mt-1">Simplest method. Users just click a button to gain access.</div>
+                        {% if config.method == 'button' %}<div class="absolute top-2 right-2 w-3 h-3 rounded-full bg-accent shadow-[0_0_10px_rgba(79,70,229,0.8)]"></div>{% endif %}
+                    </label>
+
+                    <label class="relative flex flex-col p-4 cursor-pointer rounded-xl border {% if config.method == 'math' %}border-accent bg-accent/10{% else %}border-white/10 bg-white/[0.02] hover:bg-white/[0.05]{% endif %} transition-all">
+                        <input type="radio" name="method" value="math" class="sr-only" {% if config.method == 'math' %}checked{% endif %} onchange="this.form.submit()">
+                        <div class="text-2xl mb-2">🧮</div>
+                        <div class="font-semibold text-gray-200">Math Captcha</div>
+                        <div class="text-xs text-muted mt-1">Users must solve a basic math equation (e.g. 5 + 3).</div>
+                        {% if config.method == 'math' %}<div class="absolute top-2 right-2 w-3 h-3 rounded-full bg-accent shadow-[0_0_10px_rgba(79,70,229,0.8)]"></div>{% endif %}
+                    </label>
+
+                    <label class="relative flex flex-col p-4 cursor-pointer rounded-xl border {% if config.method == 'rules' %}border-accent bg-accent/10{% else %}border-white/10 bg-white/[0.02] hover:bg-white/[0.05]{% endif %} transition-all">
+                        <input type="radio" name="method" value="rules" class="sr-only" {% if config.method == 'rules' %}checked{% endif %} onchange="this.form.submit()">
+                        <div class="text-2xl mb-2">📜</div>
+                        <div class="font-semibold text-gray-200">Rule Acceptance</div>
+                        <div class="text-xs text-muted mt-1">Users must read and acknowledge server rules.</div>
+                        {% if config.method == 'rules' %}<div class="absolute top-2 right-2 w-3 h-3 rounded-full bg-accent shadow-[0_0_10px_rgba(79,70,229,0.8)]"></div>{% endif %}
+                    </label>
+                </div>
+            </div>
+
+            <!-- Role Configuration -->
+            <div>
+                <h3 class="text-lg font-semibold text-white mb-4 border-b border-white/5 pb-2">Role Management</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-1">Unverified Role ID (Quarantine)</label>
+                        <input type="text" name="unverified_role_id" value="{{ config.unverified_role_id or '' }}" placeholder="1234567890" class="w-full bg-[#0d111a] border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-accent">
+                        <p class="text-xs text-muted mt-1">Given immediately upon join.</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-1">Verified Role ID (Access)</label>
+                        <input type="text" name="verified_role_id" value="{{ config.verified_role_id or '' }}" placeholder="1234567890" class="w-full bg-[#0d111a] border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-accent">
+                        <p class="text-xs text-muted mt-1">Given upon successful verification.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeout Settings -->
+            <div>
+                <h3 class="text-lg font-semibold text-white mb-4 border-b border-white/5 pb-2">Timeout Settings</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-1">Timeout Period (Hours)</label>
+                        <input type="number" name="timeout_hours" value="{{ config.timeout_hours }}" min="1" max="720" class="w-full bg-[#0d111a] border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-accent">
+                    </div>
+                    
+                    <div class="pb-2">
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input type="checkbox" name="auto_kick" {% if config.auto_kick %}checked{% endif %} class="w-5 h-5 rounded text-accent bg-[#0d111a] border-white/10 focus:ring-accent focus:ring-offset-0">
+                            <div>
+                                <div class="font-medium text-gray-200 group-hover:text-white transition-colors">Auto-Kick Unverified</div>
+                                <div class="text-xs text-muted">Kick users who fail to verify within the timeout period.</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-black/20 px-6 py-4 flex justify-between items-center border-t border-white/5">
+            <div class="text-sm text-muted">
+                <span class="inline-block w-2 h-2 rounded-full bg-success animate-pulse mr-2"></span> Changes sync automatically
+            </div>
+            <button type="submit" name="action" value="save" class="bg-accent hover:bg-accentHover text-white px-6 py-2 rounded-lg text-sm font-semibold transition-colors shadow">Save Verification Settings</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

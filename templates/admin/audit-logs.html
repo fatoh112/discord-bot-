@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block title %}Admin | Audit Logs{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6" x-data="auditLogsManager()">
+    <div class="flex justify-between items-center">
+        <div>
+            <h1 class="text-3xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Audit Logs</h1>
+            <p class="text-muted text-sm mt-1">Review system and moderation actions.</p>
+        </div>
+        
+        <button @click="exportCSV" class="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg font-semibold transition-colors flex items-center gap-2 text-sm border border-white/10 shadow">
+            <span>⬇️</span> Export CSV
+        </button>
+    </div>
+
+    <!-- Filters -->
+    <div class="glass-panel p-4 rounded-xl flex flex-wrap gap-4 items-end">
+        <div>
+            <label class="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Search</label>
+            <input type="text" x-model="filters.search" placeholder="Search reason or target..." class="w-64 bg-[#0d111a] border border-white/10 rounded-lg px-3 py-1.5 text-white text-sm focus:outline-none focus:border-accent">
+        </div>
+        
+        <div>
+            <label class="block text-xs font-semibold text-muted uppercase tracking-wider mb-1">Action Type</label>
+            <select x-model="filters.action" class="w-48 bg-[#0d111a] border border-white/10 rounded-lg px-3 py-1.5 text-white text-sm focus:outline-none focus:border-accent">
+                <option value="">All Actions</option>
+                <option value="ROLE_ADD">Role Added</option>
+                <option value="ROLE_REMOVE">Role Removed</option>
+                <option value="CONFIG_CHANGE">Config Change</option>
+                <option value="USER_KICK">User Kick</option>
+                <option value="USER_BAN">User Ban</option>
+            </select>
+        </div>
+        
+        <button @click="fetchLogs" class="bg-accent hover:bg-accentHover text-white px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors h-[34px]">Apply Filters</button>
+    </div>
+
+    <!-- Data Table -->
+    <div class="glass-panel rounded-xl overflow-hidden shadow-lg border border-white/5">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+                <thead class="bg-white/[0.02] border-b border-white/5 text-muted uppercase text-xs">
+                    <tr>
+                        <th class="px-5 py-3">Timestamp</th>
+                        <th class="px-5 py-3">Admin</th>
+                        <th class="px-5 py-3">Action</th>
+                        <th class="px-5 py-3">Target</th>
+                        <th class="px-5 py-3">Reason / Details</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-white/5 font-mono text-[13px]">
+                    <tr x-show="loading">
+                        <td colspan="5" class="px-5 py-12 text-center text-muted">
+                            <svg class="animate-spin h-8 w-8 text-accent mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            Loading audit logs...
+                        </td>
+                    </tr>
+                    
+                    <tr x-show="!loading && logs.length === 0">
+                        <td colspan="5" class="px-5 py-12 text-center text-muted">No audit logs match your criteria.</td>
+                    </tr>
+                    
+                    <template x-for="log in logs" :key="log.id">
+                        <tr class="hover:bg-white/[0.02] transition-colors">
+                            <td class="px-5 py-3 text-muted whitespace-nowrap" x-text="formatDate(log.timestamp)"></td>
+                            <td class="px-5 py-3 text-gray-300" x-text="log.admin_id"></td>
+                            <td class="px-5 py-3">
+                                <span class="px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider" 
+                                      :class="{
+                                          'bg-green-500/10 text-green-400 border border-green-500/20': log.action.includes('ADD') || log.action.includes('CREATE'),
+                                          'bg-red-500/10 text-red-400 border border-red-500/20': log.action.includes('REMOVE') || log.action.includes('DELETE') || log.action.includes('KICK') || log.action.includes('BAN'),
+                                          'bg-blue-500/10 text-blue-400 border border-blue-500/20': log.action.includes('CHANGE') || log.action.includes('UPDATE')
+                                      }"
+                                      x-text="log.action"></span>
+                            </td>
+                            <td class="px-5 py-3 text-gray-300" x-text="log.target_id || '-'"></td>
+                            <td class="px-5 py-3 text-gray-400 whitespace-pre-wrap" x-text="log.reason || log.details || '-'"></td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Pagination Placeholder -->
+        <div class="px-5 py-3 border-t border-white/5 flex items-center justify-between text-sm text-muted">
+            <div>Showing top 50 recent events</div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function auditLogsManager() {
+    return {
+        logs: [],
+        loading: true,
+        filters: {
+            search: '',
+            action: ''
+        },
+        
+        init() {
+            this.fetchLogs();
+        },
+        
+        async fetchLogs() {
+            this.loading = true;
+            try {
+                const params = new URLSearchParams(this.filters);
+                const res = await fetch(`/api/audit-logs?${params}`);
+                if(res.ok) this.logs = await res.json();
+            } catch(err) {
+                this.$dispatch('notify', {msg: 'Failed to fetch logs', type: 'error'});
+            } finally {
+                this.loading = false;
+            }
+        },
+        
+        formatDate(iso) {
+            const d = new Date(iso + 'Z'); // SQLite assumes UTC usually
+            return d.toLocaleString();
+        },
+        
+        exportCSV() {
+            if(this.logs.length === 0) return;
+            const headers = "Timestamp,Admin ID,Action,Target ID,Reason\n";
+            const rows = this.logs.map(l => `"${l.timestamp}","${l.admin_id}","${l.action}","${l.target_id || ''}","${(l.reason || l.details || '').replace(/"/g, '""')}"`).join('\n');
+            const blob = new Blob([headers + rows], {type: 'text/csv'});
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.setAttribute('download', `audit_logs_${new Date().toISOString().split('T')[0]}.csv`);
+            a.click();
+        }
+    }
+}
+</script>
+{% endblock %}

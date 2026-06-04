@@ -1,0 +1,27 @@
+DISCORD BOT QUICK START INSTRUCTIONS
+====================================
+
+Follow these simple steps to configure and launch your Discord Bot:
+
+1. Setup Your Credentials
+   - Copy the ".env.example" file and rename the new copy to ".env".
+   - Open ".env" in a text editor and configure:
+     * DISCORD_TOKEN: Your bot token from the Discord Developer Portal.
+     * ADMIN_USER_IDS: Comma-separated list of admin Discord user IDs.
+     * ENCRYPTION_KEY: Your symmetric AES key for backup encryption.
+     * DASHBOARD_PASSWORD_HASH: Bcrypt hash of your password for dashboard access.
+
+2. Launch the Bot
+   - Double-click "launch.bat".
+   - The launcher will automatically:
+     * Verify your ".env" file is present.
+     * Create a virtual environment (".venv") if missing.
+     * Install required dependencies.
+     * Start the bot processes.
+
+3. Monitoring & Management
+   - Open a browser and navigate to: http://localhost:8080/status
+   - Sign in with your configured admin credentials to view metrics and bot states.
+
+4. Stopping the Bot
+   - Press Ctrl+C in the bot window, or run "stop.bat" to shutdown the application.

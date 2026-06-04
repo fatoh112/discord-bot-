@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}Admin | Slash Commands{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto space-y-6" x-data="commandsManager()">
+    <div class="flex justify-between items-center">
+        <div>
+            <h1 class="text-3xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Slash Commands</h1>
+            <p class="text-muted text-sm mt-1">Manage global discord application commands and view statistics.</p>
+        </div>
+        
+        <button @click="syncCommands" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg font-semibold transition-colors flex items-center gap-2 shadow" :disabled="syncing">
+            <svg class="w-5 h-5" :class="{'animate-spin': syncing}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+            <span x-text="syncing ? 'Syncing...' : 'Sync Commands to Discord'"></span>
+        </button>
+    </div>
+
+    <!-- Commands List -->
+    <div class="glass-panel rounded-xl overflow-hidden shadow-lg border border-white/5">
+        <div class="p-5 border-b border-white/5 bg-white/[0.02]">
+            <h3 class="text-lg font-semibold text-white">Registered Commands</h3>
+        </div>
+        
+        <div class="divide-y divide-white/5">
+            <tr x-show="loading">
+                <div class="p-12 text-center text-muted">
+                    <svg class="animate-spin h-8 w-8 text-accent mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    Loading commands from bot tree...
+                </div>
+            </tr>
+            
+            <template x-for="cmd in commands" :key="cmd.name">
+                <div class="p-5 flex items-center justify-between hover:bg-white/[0.01] transition-colors">
+                    <div>
+                        <div class="flex items-center gap-3 mb-1">
+                            <span class="font-bold text-lg text-white font-mono bg-black/30 px-2 py-0.5 rounded">/<span x-text="cmd.name"></span></span>
+                            <span class="px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider bg-gray-500/20 text-gray-400 border border-gray-500/30">Slash</span>
+                        </div>
+                        <div class="text-sm text-gray-400" x-text="cmd.description"></div>
+                        <div class="mt-2 flex gap-2" x-show="cmd.options && cmd.options.length > 0">
+                            <template x-for="opt in cmd.options">
+                                <span class="text-xs font-mono text-accent bg-accent/10 px-1.5 py-0.5 rounded border border-accent/20" x-text="opt"></span>
+                            </template>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col items-end gap-2">
+                        <!-- Stats Placeholder -->
+                        <div class="text-xs text-muted font-medium bg-black/20 px-2 py-1 rounded">
+                            Uses: <span class="text-white" x-text="Math.floor(Math.random() * 50)"></span> (24h)
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function commandsManager() {
+    return {
+        commands: [],
+        loading: true,
+        syncing: false,
+        
+        init() {
+            this.fetchCommands();
+        },
+        
+        async fetchCommands() {
+            this.loading = true;
+            try {
+                const res = await fetch('/api/commands');
+                if(res.ok) this.commands = await res.json();
+            } catch(err) {
+                this.$dispatch('notify', {msg: 'Failed to fetch commands', type: 'error'});
+            } finally {
+                this.loading = false;
+            }
+        },
+        
+        async syncCommands() {
+            this.syncing = true;
+            try {
+                const res = await fetch('/api/commands/sync', {method: 'POST'});
+                if(res.ok) {
+                    this.$dispatch('notify', {msg: 'Global Sync Dispatched! Discord may take 1 hour to update.', type: 'success'});
+                } else {
+                    throw new Error("Sync failed");
+                }
+            } catch(err) {
+                this.$dispatch('notify', {msg: 'Failed to sync commands: ' + err.message, type: 'error'});
+            } finally {
+                this.syncing = false;
+            }
+        }
+    }
+}
+</script>
+{% endblock %}

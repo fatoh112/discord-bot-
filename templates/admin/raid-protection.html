@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Admin | Raid Protection{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-6">
+    <div class="flex justify-between items-center">
+        <div>
+            <h1 class="text-3xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Raid Protection</h1>
+            <p class="text-muted text-sm mt-1">Configure automated defense mechanisms against bot raids and mass joins.</p>
+        </div>
+        
+        <form method="POST" action="{{ url_for('admin_raid_protection') }}">
+            <input type="hidden" name="action" value="toggle_enable">
+            <button type="submit" class="flex items-center gap-2 px-4 py-2 rounded-full border {% if config.enabled %}bg-success/20 border-success/50 text-success{% else %}bg-gray-800 border-gray-600 text-gray-400{% endif %} transition-colors shadow">
+                <div class="w-3 h-3 rounded-full {% if config.enabled %}bg-success{% else %}bg-gray-500{% endif %}"></div>
+                <span class="font-semibold">{{ 'Enabled' if config.enabled else 'Disabled' }}</span>
+            </button>
+        </form>
+    </div>
+
+    <!-- Status Banner -->
+    <div class="glass-panel p-5 rounded-xl border-l-4 {% if lockdown_active %}border-danger bg-danger/10{% else %}border-success bg-success/10{% endif %} flex justify-between items-center">
+        <div>
+            <h3 class="text-lg font-semibold {% if lockdown_active %}text-danger{% else %}text-success{% endif %}">
+                {% if lockdown_active %}⚠️ Server Lockdown Active{% else %}✅ Server Secure{% endif %}
+            </h3>
+            <p class="text-sm {% if lockdown_active %}text-red-200{% else %}text-green-200{% endif %}">
+                {% if lockdown_active %}
+                The server is currently rejecting all new joins. New accounts are being automatically kicked.
+                {% else %}
+                Normal join behavior is active. Traffic is being monitored for suspicious patterns.
+                {% endif %}
+            </p>
+        </div>
+        
+        <form method="POST" action="{{ url_for('admin_raid_protection') }}">
+            <input type="hidden" name="action" value="force_lockdown">
+            {% if lockdown_active %}
+            <input type="hidden" name="lockdown_state" value="off">
+            <button type="submit" class="bg-white hover:bg-gray-100 text-danger font-bold py-2 px-4 rounded shadow">Lift Lockdown</button>
+            {% else %}
+            <input type="hidden" name="lockdown_state" value="on">
+            <button type="submit" class="bg-danger hover:bg-red-600 text-white font-bold py-2 px-4 rounded shadow">Force Lockdown</button>
+            {% endif %}
+        </form>
+    </div>
+
+    <form method="POST" action="{{ url_for('admin_raid_protection') }}" class="glass-panel rounded-xl overflow-hidden">
+        <input type="hidden" name="action" value="update_settings">
+        
+        <div class="p-6 space-y-8">
+            <!-- Detection Thresholds -->
+            <div>
+                <h3 class="text-lg font-semibold text-white mb-4 border-b border-white/5 pb-2">Detection Thresholds</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-1">Join Velocity (Members/Minute)</label>
+                        <div class="flex items-center gap-4">
+                            <input type="number" name="join_velocity_threshold" value="{{ config.join_velocity_threshold }}" min="1" max="100" class="w-24 bg-[#0d111a] border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-accent text-center">
+                            <input type="range" min="1" max="100" value="{{ config.join_velocity_threshold }}" class="flex-1 accent-accent" oninput="this.previousElementSibling.value = this.value">
+                        </div>
+                        <p class="text-xs text-muted mt-2">If this many users join within 60 seconds, auto-lockdown is triggered.</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-1">Suspicious Account Age (Hours)</label>
+                        <div class="flex items-center gap-4">
+                            <input type="number" name="account_age_hours" value="{{ config.account_age_hours }}" min="0" max="720" class="w-24 bg-[#0d111a] border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-accent text-center">
+                            <input type="range" min="0" max="720" value="{{ config.account_age_hours }}" class="flex-1 accent-accent" oninput="this.previousElementSibling.value = this.value">
+                        </div>
+                        <p class="text-xs text-muted mt-2">Accounts newer than this will be kicked if they join during a lockdown.</p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="bg-black/20 px-6 py-4 flex justify-end gap-4 border-t border-white/5">
+            <button type="submit" class="bg-accent hover:bg-accentHover text-white px-6 py-2 rounded-lg text-sm font-semibold transition-colors shadow">Save Protection Settings</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

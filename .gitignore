@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+env/
+venv/
+ENV/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local configuration and data
+.env
+.port
+config.json
+database.db
+database.db-journal
+database.db-wal
+metrics.json
+logs/bot.log
+logs/errors.log
+logs/audit.log
+logs/crash_dump.json
+backups/daily/
+backups/weekly/
+backups/monthly/
+backups/checksums/
+test_metrics.json
+
+# IDEs
+.vscode/
+.idea/

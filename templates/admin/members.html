@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+{% block title %}Admin | Member Management{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto space-y-6" x-data="memberManager()">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+            <h1 class="text-3xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Member Management</h1>
+            <p class="text-muted text-sm mt-1">View, search, and manage roles for server members.</p>
+        </div>
+        
+        <div class="flex gap-3">
+            <div class="relative">
+                <input type="text" x-model="searchQuery" placeholder="Search users..." class="bg-[#0d111a] border border-white/10 rounded-lg pl-10 pr-4 py-2 text-white text-sm focus:outline-none focus:border-accent w-64">
+                <svg class="w-4 h-4 text-muted absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            
+            <select x-model="selectedGuild" @change="fetchMembers" class="bg-[#0d111a] border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-accent">
+                <template x-for="guild in guilds" :key="guild.id">
+                    <option :value="guild.id" x-text="guild.name"></option>
+                </template>
+            </select>
+            
+            <button @click="fetchMembers" class="p-2 bg-white/5 hover:bg-white/10 rounded-lg text-white transition-colors" title="Refresh">
+                <svg class="w-5 h-5" :class="{'animate-spin': loading}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Bulk Actions Toolbar -->
+    <div x-show="selectedMembers.length > 0" x-transition class="glass-panel p-4 rounded-xl flex items-center justify-between shadow-lg border-accent/30 bg-accent/5">
+        <div class="flex items-center gap-4">
+            <span class="text-accent font-semibold"><span x-text="selectedMembers.length"></span> users selected</span>
+            <div class="h-6 w-px bg-white/10"></div>
+            <button @click="openBulkRoleModal" class="text-sm bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded transition-colors">Assign Role</button>
+            <button @click="bulkKick" class="text-sm bg-danger/20 hover:bg-danger/30 text-danger border border-danger/50 px-3 py-1.5 rounded transition-colors">Kick Selected</button>
+        </div>
+        <button @click="selectedMembers = []" class="text-muted hover:text-white text-sm">Clear Selection</button>
+    </div>
+
+    <!-- Member Table -->
+    <div class="glass-panel rounded-xl overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+                <thead class="bg-white/[0.02] border-b border-white/5 text-muted uppercase text-xs">
+                    <tr>
+                        <th class="px-4 py-3 w-12 text-center">
+                            <input type="checkbox" @change="toggleAll" :checked="selectedMembers.length === filteredMembers.length && filteredMembers.length > 0" class="w-4 h-4 rounded text-accent bg-[#0d111a] border-white/10">
+                        </th>
+                        <th class="px-4 py-3 cursor-pointer hover:text-white transition-colors" @click="sortBy('name')">User</th>
+                        <th class="px-4 py-3">Roles</th>
+                        <th class="px-4 py-3 cursor-pointer hover:text-white transition-colors" @click="sortBy('joined_at')">Joined At</th>
+                        <th class="px-4 py-3 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-white/5">
+                    <tr x-show="loading">
+                        <td colspan="5" class="px-4 py-8 text-center text-muted">
+                            <svg class="animate-spin h-8 w-8 text-accent mx-auto mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            Loading members...
+                        </td>
+                    </tr>
+                    
+                    <tr x-show="!loading && filteredMembers.length === 0">
+                        <td colspan="5" class="px-4 py-8 text-center text-muted">No members found matching your search.</td>
+                    </tr>
+
+                    <template x-for="member in paginatedMembers" :key="member.id">
+                        <tr class="hover:bg-white/[0.02] transition-colors group">
+                            <td class="px-4 py-3 text-center">
+                                <input type="checkbox" :value="member.id" x-model="selectedMembers" class="w-4 h-4 rounded text-accent bg-[#0d111a] border-white/10">
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-3">
+                                    <img :src="member.avatar" class="w-8 h-8 rounded-full bg-gray-800">
+                                    <div>
+                                        <div class="font-semibold text-gray-200 flex items-center gap-2">
+                                            <span x-text="member.name"></span>
+                                            <span x-show="member.bot" class="bg-[#5865F2] text-white text-[10px] px-1 rounded uppercase tracking-wider font-bold">Bot</span>
+                                        </div>
+                                        <div class="text-xs text-muted" x-text="member.id"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="flex flex-wrap gap-1">
+                                    <template x-for="role in member.roles.slice(0, 3)" :key="role.id">
+                                        <span class="px-2 py-0.5 text-[10px] uppercase tracking-wider font-semibold rounded-full border"
+                                              :style="`color: ${role.color}; border-color: ${role.color}40; background-color: ${role.color}10`"
+                                              x-text="role.name"></span>
+                                    </template>
+                                    <span x-show="member.roles.length > 3" class="px-2 py-0.5 text-[10px] uppercase tracking-wider font-semibold rounded-full border border-white/10 bg-white/5 text-muted">
+                                        +<span x-text="member.roles.length - 3"></span>
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="px-4 py-3 text-muted text-sm" x-text="formatDate(member.joined_at)"></td>
+                            <td class="px-4 py-3 text-right opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button @click="kickMember(member.id)" class="text-danger hover:bg-danger/10 p-1.5 rounded" title="Kick">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7a4 4 0 11-8 0 4 4 0 018 0zM9 14a6 6 0 00-6 6v1h12v-1a6 6 0 00-6-6zM21 12h-6"></path></svg>
+                                </button>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Pagination -->
+        <div class="px-4 py-3 border-t border-white/5 flex items-center justify-between" x-show="filteredMembers.length > 0">
+            <div class="text-sm text-muted">
+                Showing <span x-text="(currentPage - 1) * itemsPerPage + 1"></span> to <span x-text="Math.min(currentPage * itemsPerPage, filteredMembers.length)"></span> of <span x-text="filteredMembers.length"></span> users
+            </div>
+            <div class="flex gap-2">
+                <button @click="currentPage--" :disabled="currentPage === 1" class="px-3 py-1 rounded border border-white/10 text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/5">Previous</button>
+                <button @click="currentPage++" :disabled="currentPage >= totalPages" class="px-3 py-1 rounded border border-white/10 text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/5">Next</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function memberManager() {
+    return {
+        guilds: [],
+        selectedGuild: null,
+        members: [],
+        loading: true,
+        searchQuery: '',
+        selectedMembers: [],
+        sortCol: 'joined_at',
+        sortAsc: false,
+        currentPage: 1,
+        itemsPerPage: 50,
+
+        async init() {
+            // Fetch guilds first
+            try {
+                const res = await fetch('/api/guilds');
+                if (!res.ok) throw new Error("Failed to fetch guilds");
+                this.guilds = await res.json();
+                if (this.guilds.length > 0) {
+                    this.selectedGuild = this.guilds[0].id;
+                    this.fetchMembers();
+                } else {
+                    this.loading = false;
+                }
+            } catch (err) {
+                console.error(err);
+                this.$dispatch('notify', {msg: 'Could not load guilds', type: 'error'});
+                this.loading = false;
+            }
+            
+            this.$watch('searchQuery', () => { this.currentPage = 1; });
+        },
+
+        async fetchMembers() {
+            if (!this.selectedGuild) return;
+            this.loading = true;
+            this.selectedMembers = [];
+            
+            try {
+                const res = await fetch(`/api/guilds/${this.selectedGuild}/members`);
+                if (!res.ok) throw new Error("API Error");
+                this.members = await res.json();
+            } catch (err) {
+                console.error(err);
+                this.$dispatch('notify', {msg: 'Failed to fetch members list', type: 'error'});
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        get filteredMembers() {
+            let result = this.members;
+            if (this.searchQuery) {
+                const q = this.searchQuery.toLowerCase();
+                result = result.filter(m => m.name.toLowerCase().includes(q) || m.id.includes(q));
+            }
+            
+            result.sort((a, b) => {
+                let valA = a[this.sortCol];
+                let valB = b[this.sortCol];
+                
+                if (this.sortCol === 'joined_at') {
+                    valA = new Date(valA).getTime();
+                    valB = new Date(valB).getTime();
+                }
+                
+                if (valA < valB) return this.sortAsc ? -1 : 1;
+                if (valA > valB) return this.sortAsc ? 1 : -1;
+                return 0;
+            });
+            
+            return result;
+        },
+
+        get paginatedMembers() {
+            const start = (this.currentPage - 1) * this.itemsPerPage;
+            return this.filteredMembers.slice(start, start + this.itemsPerPage);
+        },
+
+        get totalPages() {
+            return Math.ceil(this.filteredMembers.length / this.itemsPerPage);
+        },
+
+        sortBy(col) {
+            if (this.sortCol === col) {
+                this.sortAsc = !this.sortAsc;
+            } else {
+                this.sortCol = col;
+                this.sortAsc = true;
+            }
+        },
+
+        toggleAll(e) {
+            if (e.target.checked) {
+                this.selectedMembers = this.filteredMembers.map(m => m.id);
+            } else {
+                this.selectedMembers = [];
+            }
+        },
+
+        formatDate(dateString) {
+            if (!dateString) return "Unknown";
+            const d = new Date(dateString);
+            return d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        },
+
+        async kickMember(id) {
+            if(!confirm("Are you sure you want to kick this user?")) return;
+            // Stub for real API
+            this.$dispatch('notify', {msg: `Simulated kick for user ${id}`, type: 'success'});
+            this.members = this.members.filter(m => m.id !== id);
+        },
+        
+        async bulkKick() {
+            if(!confirm(`Kick ${this.selectedMembers.length} users?`)) return;
+            this.$dispatch('notify', {msg: `Simulated bulk kick for ${this.selectedMembers.length} users`, type: 'success'});
+            this.members = this.members.filter(m => !this.selectedMembers.includes(m.id));
+            this.selectedMembers = [];
+        },
+        
+        openBulkRoleModal() {
+            this.$dispatch('notify', {msg: 'Bulk role assignment coming soon', type: 'info'});
+        }
+    }
+}
+</script>
+{% endblock %}

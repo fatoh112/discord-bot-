@@ -1,0 +1,23 @@
+<!-- Header -->
+<header class="h-16 glass-panel border-b border-white/5 flex items-center justify-between px-6 shrink-0 z-10">
+    <div class="flex items-center gap-4">
+        <!-- Mobile menu button -->
+        <button class="md:hidden text-muted hover:text-white">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+        <h2 class="text-xl font-semibold">{{ page_title|default('Dashboard') }}</h2>
+    </div>
+    
+    <div class="flex items-center gap-4">
+        <!-- Status indicator -->
+        <div class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-success/10 text-success border border-success/20">
+            <div class="w-2 h-2 rounded-full bg-success animate-pulse"></div>
+            Bot Online
+        </div>
+        
+        <!-- Profile dropdown placeholder -->
+        <div class="w-8 h-8 rounded-full bg-accent/20 border border-accent/30 flex items-center justify-center text-accent font-bold text-sm">
+            A
+        </div>
+    </div>
+</header>
