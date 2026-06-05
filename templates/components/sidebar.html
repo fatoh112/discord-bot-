@@ -18,6 +18,9 @@
         <a href="{{ url_for('admin_autorole') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-white/5 {% if request.endpoint == 'admin_autorole' %}bg-accent/10 text-accent{% else %}text-muted hover:text-white{% endif %}">
             <span>🤖</span> Auto-Role
         </a>
+        <a href="{{ url_for('admin_music') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-white/5 {% if request.endpoint == 'admin_music' %}bg-accent/10 text-accent{% else %}text-muted hover:text-white{% endif %}">
+            <span>🎵</span> Music
+        </a>
         <a href="{{ url_for('admin_welcome') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-white/5 {% if request.endpoint == 'admin_welcome' %}bg-accent/10 text-accent{% else %}text-muted hover:text-white{% endif %}">
             <span>👋</span> Welcome
         </a>

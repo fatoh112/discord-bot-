@@ -9,6 +9,34 @@
     </div>
     
     <div class="flex items-center gap-4">
+        
+        <!-- Server Selector Dropdown -->
+        <div class="server-selector" x-data="{ open: false }" @click.away="open = false">
+          <button class="server-dropdown-btn" @click="open = !open">
+            {% if current_guild and current_guild.icon %}
+            <img src="{{ current_guild.icon.url }}" alt="Server Icon" class="server-icon">
+            {% else %}
+            <div class="server-icon bg-white/10 flex items-center justify-center text-xs">S</div>
+            {% endif %}
+            <span>{{ current_guild.name if current_guild else 'No Server' }}</span>
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          
+          <div class="server-dropdown-menu hidden" :class="{ 'hidden': !open }" id="serverDropdown">
+            {% for guild in all_guilds %}
+            <a href="/api/guilds/{{ guild.id }}/select" class="server-option {% if current_guild and guild.id == current_guild.id %}active{% endif %}">
+              {% if guild.icon %}
+              <img src="{{ guild.icon.url }}" alt="{{ guild.name }}">
+              {% else %}
+              <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-xs flex-shrink-0">S</div>
+              {% endif %}
+              <span class="truncate">{{ guild.name }}</span>
+              <span class="member-count ml-auto text-xs text-gray-400">{{ guild.member_count }}</span>
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+
         <!-- Status indicator -->
         <div class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-success/10 text-success border border-success/20">
             <div class="w-2 h-2 rounded-full bg-success animate-pulse"></div>
@@ -21,3 +49,64 @@
         </div>
     </div>
 </header>
+<style>
+.server-selector {
+  position: relative;
+  margin-right: 10px;
+}
+.server-dropdown-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.server-dropdown-btn:hover {
+  background: rgba(255,255,255,0.1);
+}
+.server-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+.server-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background: #0f172a;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  min-width: 250px;
+  max-height: 400px;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+.server-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  color: white;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.server-option:hover {
+  background: rgba(255,255,255,0.05);
+}
+.server-option.active {
+  background: rgba(99, 102, 241, 0.15);
+  border-left: 3px solid #6366f1;
+}
+.server-option img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+</style>

@@ -88,6 +88,24 @@ CREATE TABLE IF NOT EXISTS action_history (
 );
 """
 
+CREATE_MUSIC_GUILD_CONFIG = """
+CREATE TABLE IF NOT EXISTS music_guild_config (
+    guild_id TEXT PRIMARY KEY,
+    dj_role_id TEXT,
+    max_queue_size INTEGER DEFAULT 100,
+    auto_disconnect_minutes INTEGER DEFAULT 5
+);
+"""
+
+CREATE_MUSIC_PLAYLISTS = """
+CREATE TABLE IF NOT EXISTS music_playlists (
+    user_id TEXT,
+    playlist_name TEXT,
+    tracks TEXT,
+    PRIMARY KEY (user_id, playlist_name)
+);
+"""
+
 class DatabaseModels:
     """Helper service managing SQL execution and CRUD model bindings."""
 
@@ -105,7 +123,9 @@ class DatabaseModels:
             CREATE_VERIFICATION_QUEUE,
             CREATE_METRICS_CACHE,
             CREATE_DASHBOARD_PREFS,
-            CREATE_ACTION_HISTORY
+            CREATE_ACTION_HISTORY,
+            CREATE_MUSIC_GUILD_CONFIG,
+            CREATE_MUSIC_PLAYLISTS
         ]
         async with self.db.begin_transaction() as conn:
             for statement in statements:
@@ -256,3 +276,36 @@ class DatabaseModels:
             (limit,)
         )
         return [dict(r) for r in rows]
+
+    # --- music CRUD ---
+    async def get_music_config(self, guild_id: str) -> Optional[Dict[str, Any]]:
+        row = await self.db.fetchone(
+            "SELECT dj_role_id, max_queue_size, auto_disconnect_minutes FROM music_guild_config WHERE guild_id = ?",
+            (guild_id,)
+        )
+        return dict(row) if row else None
+
+    async def save_music_config(self, guild_id: str, dj_role_id: Optional[str], max_queue_size: int = 100, auto_disconnect_minutes: int = 5) -> None:
+        await self.db.execute(
+            """
+            INSERT OR REPLACE INTO music_guild_config (guild_id, dj_role_id, max_queue_size, auto_disconnect_minutes)
+            VALUES (?, ?, ?, ?)
+            """,
+            (guild_id, dj_role_id, max_queue_size, auto_disconnect_minutes)
+        )
+
+    async def save_playlist(self, user_id: str, playlist_name: str, tracks: str) -> None:
+        await self.db.execute(
+            """
+            INSERT OR REPLACE INTO music_playlists (user_id, playlist_name, tracks)
+            VALUES (?, ?, ?)
+            """,
+            (user_id, playlist_name, tracks)
+        )
+
+    async def get_playlist(self, user_id: str, playlist_name: str) -> Optional[str]:
+        row = await self.db.fetchone(
+            "SELECT tracks FROM music_playlists WHERE user_id = ? AND playlist_name = ?",
+            (user_id, playlist_name)
+        )
+        return row["tracks"] if row else None

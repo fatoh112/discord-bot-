@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% block title %}Admin | Music{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-6" x-data="musicController()">
+    <div class="flex justify-between items-center">
+        <div>
+            <h1 class="text-3xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Music Controller</h1>
+            <p class="text-muted text-sm mt-1">Manage the music queue and playback.</p>
+        </div>
+        
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1 rounded-full text-xs font-semibold"
+                  :class="{
+                      'bg-success/20 text-success border border-success/50': status === 'playing',
+                      'bg-warning/20 text-warning border border-warning/50': status === 'paused',
+                      'bg-gray-800 text-gray-400 border border-gray-600': status === 'idle'
+                  }"
+                  x-text="status.toUpperCase()">
+            </span>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Controls & Now Playing -->
+        <div class="md:col-span-1 space-y-4">
+            <div class="glass-panel p-5 rounded-xl text-center">
+                <template x-if="currentTrack">
+                    <div>
+                        <div class="w-full h-40 bg-gray-900 rounded-lg overflow-hidden mb-4 relative">
+                            <img :src="currentTrack.thumbnail || ''" class="w-full h-full object-cover opacity-75">
+                        </div>
+                        <h3 class="text-lg font-semibold text-white truncate" x-text="currentTrack.title"></h3>
+                        <p class="text-sm text-muted mt-1" x-text="formatTime(currentTrack.duration)"></p>
+                    </div>
+                </template>
+                <template x-if="!currentTrack">
+                    <div class="py-10 text-muted">
+                        <span class="text-4xl mb-2 block">🎧</span>
+                        Nothing playing
+                    </div>
+                </template>
+                
+                <div class="flex justify-center gap-4 mt-6">
+                    <button @click="togglePlay" class="p-3 bg-accent hover:bg-accentHover rounded-full text-white transition-colors">
+                        <svg x-show="status !== 'playing'" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        <svg x-show="status === 'playing'" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                    </button>
+                    <button @click="skipTrack" class="p-3 bg-gray-800 hover:bg-gray-700 rounded-full text-white transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="glass-panel p-5 rounded-xl">
+                <h3 class="text-lg font-semibold mb-4 text-gray-200 border-b border-white/10 pb-2">Add to Queue</h3>
+                <form @submit.prevent="addTrack" class="space-y-4">
+                    <div>
+                        <input type="text" x-model="searchQuery" required placeholder="Search or YouTube URL..." class="w-full bg-[#0d111a] border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-accent">
+                    </div>
+                    <button type="submit" class="w-full bg-success/20 hover:bg-success/30 text-success border border-success/50 font-semibold py-2 rounded-lg transition-colors text-sm flex justify-center items-center gap-2" :disabled="isLoading">
+                        <span x-show="!isLoading">Add to Queue</span>
+                        <span x-show="isLoading" class="animate-spin w-4 h-4 border-2 border-success border-t-transparent rounded-full"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Queue List -->
+        <div class="md:col-span-2">
+            <div class="glass-panel rounded-xl overflow-hidden h-full flex flex-col">
+                <div class="bg-white/[0.02] px-5 py-4 border-b border-white/10 flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-200">Up Next</h3>
+                    <span class="text-sm text-muted bg-gray-900 px-2 py-1 rounded-md" x-text="`${queue.length} Tracks`"></span>
+                </div>
+                
+                <div class="flex-1 overflow-y-auto">
+                    <template x-if="queue.length === 0">
+                        <div class="p-8 text-center text-muted flex flex-col items-center justify-center h-full">
+                            Queue is empty.
+                        </div>
+                    </template>
+                    <ul class="divide-y divide-white/5">
+                        <template x-for="(track, index) in queue" :key="index">
+                            <li class="p-4 flex items-center justify-between hover:bg-white/[0.02] transition-colors">
+                                <div class="flex items-center gap-4 overflow-hidden">
+                                    <div class="w-8 h-8 shrink-0 rounded-full bg-gray-800 flex items-center justify-center text-xs font-bold text-gray-400" x-text="index + 1"></div>
+                                    <div class="truncate">
+                                        <div class="font-semibold text-white truncate" x-text="track.title"></div>
+                                        <div class="text-xs text-muted" x-text="formatTime(track.duration)"></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function musicController() {
+    return {
+        guildId: '{{ current_guild.id }}',
+        status: 'idle',
+        currentTrack: null,
+        queue: [],
+        searchQuery: '',
+        isLoading: false,
+        pollInterval: null,
+
+        init() {
+            this.fetchStatus();
+            this.pollInterval = setInterval(() => this.fetchStatus(), 3000);
+        },
+        
+        formatTime(seconds) {
+            if (!seconds) return '0:00';
+            const m = Math.floor(seconds / 60);
+            const s = seconds % 60;
+            return `${m}:${s.toString().padStart(2, '0')}`;
+        },
+
+        async fetchStatus() {
+            try {
+                const res = await fetch(`/music/${this.guildId}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    this.status = data.status;
+                    this.currentTrack = data.current_track;
+                    this.queue = data.queue;
+                }
+            } catch (err) {
+                console.error("Error fetching music status", err);
+            }
+        },
+
+        async togglePlay() {
+            const action = this.status === 'playing' ? 'pause' : 'resume';
+            // Actually our endpoints are /play and /pause, skip
+            if (this.status === 'playing') {
+                await fetch(`/music/${this.guildId}/pause`, { method: 'POST' });
+            } else if (this.status === 'paused') {
+                // we don't have a resume endpoint in routes/music.py right now.
+                // We will implement skip or play. But for now we just pause/skip
+                window.dispatchEvent(new CustomEvent('notify', { detail: { msg: 'Resume via dashboard not supported yet. Use Discord command.', type: 'info' } }));
+            }
+            this.fetchStatus();
+        },
+
+        async skipTrack() {
+            await fetch(`/music/${this.guildId}/skip`, { method: 'POST' });
+            window.dispatchEvent(new CustomEvent('notify', { detail: { msg: 'Skipped track', type: 'success' } }));
+            this.fetchStatus();
+        },
+
+        async addTrack() {
+            if (!this.searchQuery) return;
+            this.isLoading = true;
+            try {
+                const res = await fetch(`/music/${this.guildId}/play`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: this.searchQuery })
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    window.dispatchEvent(new CustomEvent('notify', { detail: { msg: `Added ${data.added} tracks to queue!`, type: 'success' } }));
+                    this.searchQuery = '';
+                    this.fetchStatus();
+                } else {
+                    window.dispatchEvent(new CustomEvent('notify', { detail: { msg: data.error || 'Failed to add track', type: 'error' } }));
+                }
+            } catch (err) {
+                window.dispatchEvent(new CustomEvent('notify', { detail: { msg: 'Network error', type: 'error' } }));
+            } finally {
+                this.isLoading = false;
+            }
+        }
+    }
+}
+</script>
+{% endblock %}

@@ -42,7 +42,7 @@ class EventsCog(commands.Cog):
             # Filter history to last 60 seconds
             utility_cog.join_history = [t for t in utility_cog.join_history if now - t < 60]
 
-            threshold = self.bot.bot_config.raid_protection.join_velocity_threshold
+            threshold = self.bot.bot_config.get_guild(str(member.guild.id)).raid_protection.join_velocity_threshold
             if len(utility_cog.join_history) > threshold:
                 if not utility_cog.lockdown_active:
                     utility_cog.lockdown_active = True
@@ -59,7 +59,7 @@ class EventsCog(commands.Cog):
             is_raid_lockdown = utility_cog.lockdown_active
 
             # Account Age Check
-            account_age_hours = self.bot.bot_config.raid_protection.account_age_hours
+            account_age_hours = self.bot.bot_config.get_guild(str(member.guild.id)).raid_protection.account_age_hours
             if account_age_hours > 0:
                 age_seconds = (discord.utils.utcnow() - member.created_at).total_seconds()
                 if age_seconds < (account_age_hours * 3600):
@@ -79,14 +79,14 @@ class EventsCog(commands.Cog):
                         logger.error(f"Failed to kick underage user {member}: {e}")
 
         # 3. Add to Verification Queue DB
-        method = self.bot.bot_config.verification.method
+        method = self.bot.bot_config.get_guild(str(member.guild.id)).verification.method
         await self.models.add_to_verification(user_id, guild_id, method)
 
         # 4. If in lockdown, pause auto-roles, require manual verification.
         # Otherwise, if verification is disabled or simple button is skipped:
         # Wait, if verification unverified_role_id is set, assign it.
-        unverified_role_id = self.bot.bot_config.verification.unverified_role_id
-        if unverified_role_id and (is_raid_lockdown or self.bot.bot_config.verification.method != "none"):
+        unverified_role_id = self.bot.bot_config.get_guild(str(member.guild.id)).verification.unverified_role_id
+        if unverified_role_id and (is_raid_lockdown or self.bot.bot_config.get_guild(str(member.guild.id)).verification.method != "none"):
             unverified_role = guild.get_role(int(unverified_role_id))
             if unverified_role:
                 try:
@@ -100,7 +100,7 @@ class EventsCog(commands.Cog):
                 await autorole_cog.join_queue.put((guild_id, user_id, 0))
 
         # 5. Send Welcome message
-        welcome_cfg = self.bot.bot_config.welcome
+        welcome_cfg = self.bot.bot_config.get_guild(str(member.guild.id)).welcome
         if welcome_cfg.enabled and welcome_cfg.channel_id:
             welcome_channel = guild.get_channel(int(welcome_cfg.channel_id))
             if welcome_channel:
@@ -180,7 +180,7 @@ class EventsCog(commands.Cog):
     @commands.Cog.listener()
     async def on_guild_channel_delete(self, channel: discord.abc.GuildChannel) -> None:
         """Triggered when a channel is deleted. Updates welcome channel references if applicable."""
-        welcome_cfg = self.bot.bot_config.welcome
+        welcome_cfg = self.bot.bot_config.get_guild(str(member.guild.id)).welcome
         if welcome_cfg.channel_id == str(channel.id):
             welcome_cfg.channel_id = ""
             config_schema.save_config(self.bot.bot_config)

@@ -1,7 +1,4 @@
 import sys
-from unittest.mock import MagicMock
-# Mock audioop to support discord.py on Python 3.13/3.14 where it has been removed from stdlib
-sys.modules['audioop'] = MagicMock()
 
 # Force UTF-8 output on Windows to handle emoji in bot names/messages
 if hasattr(sys.stdout, 'reconfigure'):

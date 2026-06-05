@@ -46,7 +46,7 @@ class VerificationButtonView(discord.ui.View):
 
     @discord.ui.button(label="Verify Here", style=discord.ButtonStyle.success, custom_id="verify_button_trigger")
     async def verify_click(self, interaction: discord.Interaction, button: discord.ui.Button):
-        method = self.cog.bot.bot_config.verification.method
+        method = self.cog.bot.bot_config.get_guild(str(interaction.guild.id)).verification.method
         user_id = interaction.user.id
         
         if method == "math":
@@ -139,9 +139,9 @@ class UtilityCog(commands.Cog):
         if not member:
             return
 
-        cfg = self.bot.bot_config.verification
-        verified_role_id = self.bot.bot_config.verification.verified_role_id or self.bot.bot_config.permissions.admin_role_id # fallback
-        unverified_role_id = self.bot.bot_config.verification.unverified_role_id
+        cfg = self.bot.bot_config.get_guild(str(interaction.guild.id)).verification
+        verified_role_id = self.bot.bot_config.get_guild(str(interaction.guild.id)).verification.verified_role_id or self.bot.bot_config.permissions.admin_role_id # fallback
+        unverified_role_id = self.bot.bot_config.get_guild(str(interaction.guild.id)).verification.unverified_role_id
 
         # Roles resolutions
         verified_role = guild.get_role(int(verified_role_id)) if verified_role_id else None
@@ -178,7 +178,7 @@ class UtilityCog(commands.Cog):
         """Kicks members failing to complete verification within timeout window."""
         await self.bot.wait_until_ready()
         
-        cfg = self.bot.bot_config.verification
+        cfg = self.bot.bot_config.get_guild(str(interaction.guild.id)).verification
         if not cfg.auto_kick:
             return
 
@@ -213,7 +213,7 @@ class UtilityCog(commands.Cog):
             await interaction.response.send_message("❌ Access Denied.", ephemeral=True)
             return
 
-        self.bot.bot_config.welcome.template = template_text
+        self.bot.bot_config.get_guild(str(interaction.guild.id)).welcome.template = template_text
         config_schema.save_config(self.bot.bot_config)
         await interaction.response.send_message("✅ Welcome message template updated successfully.")
 
@@ -224,7 +224,7 @@ class UtilityCog(commands.Cog):
             await interaction.response.send_message("❌ Access Denied.", ephemeral=True)
             return
 
-        cfg = self.bot.bot_config.welcome
+        cfg = self.bot.bot_config.get_guild(str(interaction.guild.id)).welcome
         desc = cfg.template.format(
             user=f"<@{user.id}>",
             server=interaction.guild.name,
@@ -257,7 +257,7 @@ class UtilityCog(commands.Cog):
             await interaction.response.send_message("❌ Method must be either 'button' or 'math'.", ephemeral=True)
             return
 
-        cfg = self.bot.bot_config.verification
+        cfg = self.bot.bot_config.get_guild(str(interaction.guild.id)).verification
         cfg.method = method
         cfg.timeout_hours = timeout_hours
         cfg.auto_kick = auto_kick
@@ -403,7 +403,7 @@ class UtilityCog(commands.Cog):
             await interaction.response.send_message("❌ Access Denied.", ephemeral=True)
             return
 
-        cfg = self.bot.bot_config.raid_protection
+        cfg = self.bot.bot_config.get_guild(str(interaction.guild.id)).raid_protection
         embed = discord.Embed(
             title="Anti-Raid Shield Settings",
             color=discord.Color.red() if self.lockdown_active else discord.Color.green()
@@ -422,7 +422,7 @@ class UtilityCog(commands.Cog):
             return
 
         self.lockdown_active = enable
-        self.bot.bot_config.raid_protection.enabled = enable
+        self.bot.bot_config.get_guild(str(interaction.guild.id)).raid_protection.enabled = enable
         config_schema.save_config(self.bot.bot_config)
 
         state_msg = "🚨 **SERVER LOCKED DOWN**: Paused auto-role assignment, manual verification captcha modals enforced." if enable else "✅ **LOCKDOWN RELEASED**: Returned server entry gates to standard settings."

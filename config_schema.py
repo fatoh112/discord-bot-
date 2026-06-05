@@ -1,6 +1,6 @@
 import json
 import os
-from typing import List, Optional, Any
+from typing import List, Optional, Any, Dict
 from pydantic import BaseModel, Field
 
 
@@ -52,14 +52,25 @@ class PermissionsConfig(BaseModel):
     moderator_role_id: Optional[str] = None
 
 
-class BotConfig(BaseModel):
-    """Pydantic v2 configuration schema for the Discord bot."""
-    database: DatabaseConfig = Field(default_factory=DatabaseConfig)
+class GuildConfig(BaseModel):
+    """Configuration specific to a single Discord guild."""
     autorole: AutoRoleConfig = Field(default_factory=AutoRoleConfig)
     welcome: WelcomeConfig = Field(default_factory=WelcomeConfig)
     verification: VerificationConfig = Field(default_factory=VerificationConfig)
     raid_protection: RaidProtectionConfig = Field(default_factory=RaidProtectionConfig)
+
+
+class BotConfig(BaseModel):
+    """Pydantic v2 configuration schema for the Discord bot."""
+    database: DatabaseConfig = Field(default_factory=DatabaseConfig)
     permissions: PermissionsConfig = Field(default_factory=PermissionsConfig)
+    guilds: Dict[str, GuildConfig] = Field(default_factory=dict)
+    
+    def get_guild(self, guild_id: str) -> GuildConfig:
+        """Get or initialize the configuration for a specific guild."""
+        if guild_id not in self.guilds:
+            self.guilds[guild_id] = GuildConfig()
+        return self.guilds[guild_id]
 
     # Environmental secrets loaded from env
     discord_token: Optional[str] = None

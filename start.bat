@@ -65,11 +65,11 @@ if %EXIT_CODE% equ 0 (
 ) else if %EXIT_CODE% equ 1 (
     echo Bot exited with error (code 1). Check logs for details.
     echo Waiting 10 seconds before restart...
-    timeout /t 10 /nobreak >nul
+    ping 127.0.0.1 -n 11 >nul
     goto restart
 ) else (
-    echo Bot crashed (code %EXIT_CODE%). Restarting in 5 seconds...
-    timeout /t 5 /nobreak >nul
+    echo Bot crashed with code %EXIT_CODE%. Restarting in 5 seconds...
+    ping 127.0.0.1 -n 6 >nul
     goto restart
 )
 

@@ -7,7 +7,7 @@ import bcrypt
 import psutil
 from threading import Thread
 from typing import Dict, Any, Optional, List
-from flask import Flask, jsonify, request, render_template, render_template_string, make_response, redirect, url_for, flash
+from flask import Flask, jsonify, request, render_template, render_template_string, make_response, redirect, url_for, flash, session
 from loguru import logger
 
 # Helper to check if a port is in use
@@ -17,14 +17,26 @@ def is_port_in_use(port: int) -> bool:
 
 # Flask App Initialization
 app = Flask("AntigravityDashboard", template_folder="templates")
+from routes.music import music_bp
+app.register_blueprint(music_bp)
 
 @app.context_processor
 def inject_global_vars():
     global _bot_ref
     if _bot_ref and hasattr(_bot_ref, "bot_config"):
+        from flask import session
+        guild_id = session.get('current_guild_id')
+        current_guild = None
+        if guild_id:
+            current_guild = _bot_ref.get_guild(int(guild_id))
+        elif _bot_ref.guilds:
+            current_guild = _bot_ref.guilds[0]
+            
         return {
             "bot_name": _bot_ref.bot_config.bot_name,
-            "bot_avatar": _bot_ref.bot_config.avatar_url
+            "bot_avatar": _bot_ref.bot_config.avatar_url,
+            "current_guild": current_guild,
+            "all_guilds": _bot_ref.guilds
         }
     return {"bot_name": "Antigravity", "bot_avatar": None}
 
@@ -84,10 +96,25 @@ def is_authenticated() -> bool:
     _sessions[token] = time.time() + 1800
     return True
 
+
+def get_current_guild():
+    guild_id = session.get('current_guild_id')
+    if guild_id:
+        guild = _bot_ref.get_guild(int(guild_id))
+        if guild:
+            return guild
+            
+    if _bot_ref and _bot_ref.guilds:
+        session['current_guild_id'] = str(_bot_ref.guilds[0].id)
+        return _bot_ref.guilds[0]
+    return None
+
 # Root redirect
 @app.route("/", methods=["GET"])
 def index():
     if is_authenticated():
+        if "current_guild_id" not in session and _bot_ref.guilds:
+            session["current_guild_id"] = str(_bot_ref.guilds[0].id)
         return redirect(url_for("status"))
     return redirect(url_for("login"))
 
@@ -95,6 +122,8 @@ def index():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if is_authenticated():
+        if "current_guild_id" not in session and _bot_ref.guilds:
+            session["current_guild_id"] = str(_bot_ref.guilds[0].id)
         return redirect(url_for("status"))
         
     error = None
@@ -206,11 +235,21 @@ def status():
     )
 
 # --- Admin Routes ---
+@app.route("/admin/music")
+def admin_music():
+    if not is_authenticated(): return redirect(url_for("login"))
+    guild = get_current_guild()
+    if not guild: return "No guilds found", 400
+    
+    return render_template("admin/music.html")
+
 @app.route("/admin/autorole", methods=["GET", "POST"])
 def admin_autorole():
     if not is_authenticated(): return redirect(url_for("login"))
     
-    cfg = _bot_ref.bot_config
+    guild = get_current_guild()
+    if not guild: return "No guilds found", 400
+    cfg = _bot_ref.bot_config.get_guild(str(guild.id))
     if request.method == "POST":
         action = request.form.get("action")
         import config_schema
@@ -239,7 +278,9 @@ def admin_autorole():
 def admin_settings():
     if not is_authenticated(): return redirect(url_for("login"))
     
-    cfg = _bot_ref.bot_config
+    guild = get_current_guild()
+    if not guild: return "No guilds found", 400
+    cfg = _bot_ref.bot_config.get_guild(str(guild.id))
     if request.method == "POST":
         import config_schema
         cfg.bot_name = request.form.get("bot_name", cfg.bot_name)
@@ -258,7 +299,9 @@ def admin_settings():
 def admin_welcome():
     if not is_authenticated(): return redirect(url_for("login"))
     
-    cfg = _bot_ref.bot_config
+    guild = get_current_guild()
+    if not guild: return "No guilds found", 400
+    cfg = _bot_ref.bot_config.get_guild(str(guild.id))
     if request.method == "POST":
         action = request.form.get("action")
         import config_schema
@@ -280,7 +323,9 @@ def admin_welcome():
 def admin_verification():
     if not is_authenticated(): return redirect(url_for("login"))
     
-    cfg = _bot_ref.bot_config
+    guild = get_current_guild()
+    if not guild: return "No guilds found", 400
+    cfg = _bot_ref.bot_config.get_guild(str(guild.id))
     if request.method == "POST":
         import config_schema
         # If method was changed via radio buttons, it submits automatically
@@ -307,7 +352,9 @@ def admin_reaction_roles():
 def admin_raid_protection():
     if not is_authenticated(): return redirect(url_for("login"))
     
-    cfg = _bot_ref.bot_config
+    guild = get_current_guild()
+    if not guild: return "No guilds found", 400
+    cfg = _bot_ref.bot_config.get_guild(str(guild.id))
     if request.method == "POST":
         action = request.form.get("action")
         import config_schema
@@ -377,10 +424,91 @@ def api_get_members(guild_id):
         })
     return jsonify(members_data)
 
+@app.route("/api/guilds/<int:guild_id>/members/bulk-role", methods=["POST"])
+def api_bulk_role(guild_id):
+    if not is_authenticated() or not _bot_ref:
+        return jsonify({"error": "Unauthorized"}), 401
+        
+    data = request.json
+    user_ids = data.get("user_ids", [])
+    role_id = data.get("role_id")
+    action = data.get("action")  # 'add' or 'remove'
+    
+    if not user_ids or not role_id or action not in ['add', 'remove']:
+        return jsonify({"error": "Invalid payload"}), 400
+        
+    import asyncio
+    import discord
+    async def process_bulk_role():
+        guild = _bot_ref.get_guild(guild_id)
+        if not guild: return False
+        
+        role = guild.get_role(int(role_id))
+        if not role: return False
+        
+        success_count = 0
+        failed_count = 0
+        errors = []
+        for uid in user_ids:
+            member = guild.get_member(int(uid))
+            if not member:
+                try:
+                    member = await guild.fetch_member(int(uid))
+                except Exception as e:
+                    logger.error(f"Failed to fetch member {uid}: {e}")
+                    failed_count += 1
+                    errors.append(f"Member {uid} not found in guild.")
+                    continue
+            
+            try:
+                if action == 'add':
+                    await member.add_roles(role, reason="Dashboard Bulk Assignment")
+                else:
+                    await member.remove_roles(role, reason="Dashboard Bulk Removal")
+                success_count += 1
+            except discord.Forbidden as e:
+                logger.error(f"Bulk role permission error on {uid}: {e}")
+                failed_count += 1
+                errors.append(f"Missing permissions/hierarchy limit to modify roles for {member.name}.")
+            except Exception as e:
+                logger.error(f"Bulk role error on {uid}: {e}")
+                failed_count += 1
+                errors.append(f"Failed to update {member.name}: {e}")
+                
+        return {
+            "success_count": success_count,
+            "failed_count": failed_count,
+            "errors": list(set(errors))
+        }
+        
+    future = asyncio.run_coroutine_threadsafe(process_bulk_role(), _bot_ref.loop)
+    try:
+        result = future.result(timeout=15)
+        if result is False:
+            return jsonify({"error": "Guild or Role not found"}), 404
+            
+        success_count = result["success_count"]
+        failed_count = result["failed_count"]
+        errors = result["errors"]
+        
+        if success_count == 0 and failed_count > 0:
+            error_msg = errors[0] if errors else "Failed to modify roles."
+            return jsonify({"error": error_msg, "processed": 0, "failed": failed_count}), 400
+            
+        return jsonify({
+            "success": True,
+            "processed": success_count,
+            "failed": failed_count,
+            "errors": errors
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @app.route("/admin/audit-logs", methods=["GET"])
 def admin_audit_logs():
     if not is_authenticated(): return redirect(url_for("login"))
-    return render_template("admin/audit-logs.html")
+    guild = get_current_guild()
+    return render_template("admin/audit-logs.html", guild=guild)
 
 @app.route("/admin/commands", methods=["GET", "POST"])
 def admin_commands():
@@ -388,6 +516,14 @@ def admin_commands():
     return render_template("admin/commands.html")
 
 # --- Additional API Endpoints ---
+
+@app.route('/api/guilds/<guild_id>/select', methods=['GET', 'POST'])
+def select_guild(guild_id):
+    if not is_authenticated(): return redirect(url_for("login"))
+    session['current_guild_id'] = guild_id
+    return redirect(request.referrer or url_for("status"))
+
+
 
 @app.route("/api/audit-logs", methods=["GET"])
 def api_audit_logs():
@@ -663,7 +799,10 @@ async def start_dashboard(bot: Any) -> None:
         # 3. High Error Rate check
         if _bot_ref:
             try:
-                err_count = _bot_ref.metrics.get("error_count_24h", "SYSTEM") or 0
+                import asyncio
+                err_count = asyncio.run_coroutine_threadsafe(
+                    _bot_ref.metrics.get("error_count_24h", "SYSTEM"), _bot_ref.loop
+                ).result() or 0
                 if err_count > 10:
                     alerts_list.append({
                         "type": "HighErrorRate",

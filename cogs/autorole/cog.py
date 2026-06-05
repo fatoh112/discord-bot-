@@ -133,13 +133,13 @@ class AutoRoleCog(commands.Cog):
             role_configs = await self.models.get_autoroles(guild_id)
             if not role_configs:
                 # Fallback to loading from memory config if DB has none yet
-                cfg_roles = self.bot.bot_config.autorole.roles
+                cfg_roles = self.bot.bot_config.get_guild(str(member.guild.id)).autorole.roles
                 role_configs = [{"role_id": r.id, "priority": r.priority} for r in cfg_roles]
 
             # Priority sorting: verified members > unverified > bots (excluded)
             if member.bot:
                 # Exclude if config excludes bots
-                if self.bot.bot_config.autorole.exclude_bots:
+                if self.bot.bot_config.get_guild(str(member.guild.id if 'member' in locals() else interaction.guild.id if 'interaction' in locals() else list(self.bot.guilds)[0].id)).autorole.exclude_bots:
                     return
 
             # Prioritize role list sorting
@@ -157,7 +157,7 @@ class AutoRoleCog(commands.Cog):
                     await self.models.remove_autorole(guild_id, role_id)
                     
                     # Notify admin channel
-                    log_chan_id = self.bot.bot_config.autorole.log_channel_id
+                    log_chan_id = self.bot.bot_config.get_guild(str(member.guild.id)).autorole.log_channel_id
                     if log_chan_id:
                         chan = guild.get_channel(int(log_chan_id))
                         if isinstance(chan, discord.TextChannel):
@@ -182,7 +182,7 @@ class AutoRoleCog(commands.Cog):
                     continue
 
                 # Rate limiting delay: 2s between assignments
-                await asyncio.sleep(self.bot.bot_config.autorole.delay_seconds)
+                await asyncio.sleep(self.bot.bot_config.get_guild(str(member.guild.id)).autorole.delay_seconds)
 
                 try:
                     await member.add_roles(role, reason="Auto-Role Cog system assignment")
@@ -204,7 +204,7 @@ class AutoRoleCog(commands.Cog):
                     logger.error(f"Forbidden error trying to assign role '{role.name}' to user {member.name}")
                     await self.metrics.increment("role_assignments_failed", guild_id)
                     # Notify admin log channel
-                    log_chan_id = self.bot.bot_config.autorole.log_channel_id
+                    log_chan_id = self.bot.bot_config.get_guild(str(member.guild.id)).autorole.log_channel_id
                     if log_chan_id:
                         chan = guild.get_channel(int(log_chan_id))
                         if isinstance(chan, discord.TextChannel):
@@ -248,7 +248,7 @@ class AutoRoleCog(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member) -> None:
         """Listens for guild joins, enqueues roles, and logs parameters."""
-        if member.bot and self.bot.bot_config.autorole.exclude_bots:
+        if member.bot and self.bot.bot_config.get_guild(str(member.guild.id if 'member' in locals() else interaction.guild.id if 'interaction' in locals() else list(self.bot.guilds)[0].id)).autorole.exclude_bots:
             return
 
         guild_id = str(member.guild.id)
@@ -266,7 +266,7 @@ class AutoRoleCog(commands.Cog):
         await self.metrics.increment("member_joins_24h", guild_id)
 
         # Add to verification_queue DB
-        method = self.bot.bot_config.verification.method
+        method = self.bot.bot_config.get_guild(str(member.guild.id)).verification.method
         await self.models.add_to_verification(user_id, guild_id, method)
 
         # Enqueue in join queue
@@ -284,7 +284,7 @@ class AutoRoleCog(commands.Cog):
             await self.models.remove_autorole(guild_id, role_id)
             
             # Notify admins
-            log_chan_id = self.bot.bot_config.autorole.log_channel_id
+            log_chan_id = self.bot.bot_config.get_guild(str(member.guild.id)).autorole.log_channel_id
             if log_chan_id:
                 chan = role.guild.get_channel(int(log_chan_id))
                 if isinstance(chan, discord.TextChannel):
@@ -311,7 +311,7 @@ class AutoRoleCog(commands.Cog):
 
         roles_str = "\n".join(lines) if lines else "None configured."
 
-        cfg = self.bot.bot_config.autorole
+        cfg = self.bot.bot_config.get_guild(str(interaction.guild.id)).autorole
         embed = discord.Embed(
             title="Auto-Role System Configurations",
             color=discord.Color.indigo()
