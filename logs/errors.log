@@ -1,0 +1,982 @@
+2026-06-04 01:37:45 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 01:37:47 | ERROR    | __main__:setup_hook:107 - Failed to load extension cogs.moderation.cog: Extension 'cogs.moderation.cog' raised an error: TypeError: 'Command' object is not callable
+
+2026-06-04 01:37:47 | ERROR    | __main__:setup_hook:108 - Traceback (most recent call last):
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 947, in _load_from_module_spec
+    await setup(self)
+  File "e:\discord bot\cogs\moderation\cog.py", line 467, in setup
+    await bot.add_cog(ModerationCog(bot))
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 783, in add_cog
+    cog = await cog._inject(self, override=override, guild=guild, guilds=guilds)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\cog.py", line 684, in _inject
+    await maybe_coroutine(self.cog_load)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\utils.py", line 691, in maybe_coroutine
+    value = f(*args, **kwargs)
+TypeError: 'Command' object is not callable
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "e:\discord bot\bot.py", line 103, in setup_hook
+    await self.load_extension(cog_name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 952, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.moderation.cog' raised an error: TypeError: 'Command' object is not callable
+
+
+2026-06-04 01:37:50 | ERROR    | dashboard:run:609 - Flask dashboard runtime crash: 'WERKZEUG_SERVER_FD'
+
+2026-06-04 01:37:52 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-04 01:39:48 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 01:39:48 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 01:39:49 | ERROR    | __main__:setup_hook:113 - Failed to load extension cogs.moderation.cog: Extension 'cogs.moderation.cog' raised an error: TypeError: Commands or listeners must not start with cog_ or bot_ (in method ModerationCog.cog_mgmt)
+
+2026-06-04 01:39:49 | ERROR    | __main__:setup_hook:114 - Traceback (most recent call last):
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 762, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "e:\discord bot\cogs\moderation\cog.py", line 15, in <module>
+    class ModerationCog(commands.Cog):
+    ...<448 lines>...
+                await interaction.followup.send(f"❌ Failed to unload extension `{target}`: {e}")
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\cog.py", line 230, in __new__
+    raise TypeError(no_bot_cog.format(base, elem))
+TypeError: Commands or listeners must not start with cog_ or bot_ (in method ModerationCog.cog_mgmt)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "e:\discord bot\bot.py", line 109, in setup_hook
+    await self.load_extension(cog_name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.moderation.cog' raised an error: TypeError: Commands or listeners must not start with cog_ or bot_ (in method ModerationCog.cog_mgmt)
+
+
+2026-06-04 01:39:54 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-04 01:40:53 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 01:40:53 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 01:40:59 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-04 01:45:29 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 01:45:29 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 01:45:30 | ERROR    | __main__:setup_hook:107 - Failed to load extension cogs.moderation.cog: Extension 'cogs.moderation.cog' raised an error: TypeError: 'Command' object is not callable
+
+2026-06-04 01:45:30 | ERROR    | __main__:setup_hook:108 - Traceback (most recent call last):
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 947, in _load_from_module_spec
+    await setup(self)
+  File "e:\discord bot\cogs\moderation\cog.py", line 467, in setup
+    await bot.add_cog(ModerationCog(bot))
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 783, in add_cog
+    cog = await cog._inject(self, override=override, guild=guild, guilds=guilds)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\cog.py", line 684, in _inject
+    await maybe_coroutine(self.cog_load)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\utils.py", line 691, in maybe_coroutine
+    value = f(*args, **kwargs)
+TypeError: 'Command' object is not callable
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "e:\discord bot\bot.py", line 103, in setup_hook
+    await self.load_extension(cog_name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 952, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.moderation.cog' raised an error: TypeError: 'Command' object is not callable
+
+
+2026-06-04 01:45:33 | ERROR    | dashboard:run:616 - Flask dashboard runtime crash: 'WERKZEUG_SERVER_FD'
+
+2026-06-04 01:45:36 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-04 01:48:22 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 01:48:22 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 01:48:31 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-04 01:51:31 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 01:51:31 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 01:51:37 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-04 03:54:52 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 03:54:52 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 03:54:59 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-04 04:03:12 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 04:03:12 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 04:03:12 | ERROR    | __main__:setup_hook:113 - Failed to load extension cogs.moderation.cog: Extension 'cogs.moderation.cog' raised an error: TypeError: Commands or listeners must not start with cog_ or bot_ (in method ModerationCog.cog_group)
+
+2026-06-04 04:03:12 | ERROR    | __main__:setup_hook:114 - Traceback (most recent call last):
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 762, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "E:\discord bot\cogs\moderation\cog.py", line 14, in <module>
+    class ModerationCog(commands.Cog):
+    ...<448 lines>...
+                await interaction.followup.send(f"❌ Failed to unload extension `{target}`: {e}")
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\cog.py", line 230, in __new__
+    raise TypeError(no_bot_cog.format(base, elem))
+TypeError: Commands or listeners must not start with cog_ or bot_ (in method ModerationCog.cog_group)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\discord bot\bot.py", line 109, in setup_hook
+    await self.load_extension(cog_name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.moderation.cog' raised an error: TypeError: Commands or listeners must not start with cog_ or bot_ (in method ModerationCog.cog_group)
+
+
+2026-06-04 04:03:18 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-04 14:39:05 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 14:39:05 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 14:39:09 | ERROR    | __main__:setup_hook:113 - Failed to load extension cogs.moderation.cog: Extension 'cogs.moderation.cog' raised an error: TypeError: Commands or listeners must not start with cog_ or bot_ (in method ModerationCog.cog_group)
+
+2026-06-04 14:39:09 | ERROR    | __main__:setup_hook:114 - Traceback (most recent call last):
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 762, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "E:\discord bot\cogs\moderation\cog.py", line 14, in <module>
+    class ModerationCog(commands.Cog):
+    ...<448 lines>...
+                await interaction.followup.send(f"❌ Failed to unload extension `{target}`: {e}")
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\cog.py", line 230, in __new__
+    raise TypeError(no_bot_cog.format(base, elem))
+TypeError: Commands or listeners must not start with cog_ or bot_ (in method ModerationCog.cog_group)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\discord bot\bot.py", line 109, in setup_hook
+    await self.load_extension(cog_name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.moderation.cog' raised an error: TypeError: Commands or listeners must not start with cog_ or bot_ (in method ModerationCog.cog_group)
+
+
+2026-06-04 14:39:14 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-04 14:59:43 | ERROR    | __main__:setup_hook:112 - ❌ Failed to load cogs.autorole.cog: Extension 'cogs.autorole.cog' raised an error: CommandAlreadyRegistered: Command 'autorole' already registered.
+
+2026-06-04 14:59:43 | ERROR    | __main__:setup_hook:113 - Traceback (most recent call last):
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 947, in _load_from_module_spec
+    await setup(self)
+  File "E:\discord bot\cogs\autorole\cog.py", line 467, in setup
+    await bot.add_cog(cog)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 783, in add_cog
+    cog = await cog._inject(self, override=override, guild=guild, guilds=guilds)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\cog.py", line 723, in _inject
+    bot.tree.add_command(command, override=override, guild=guild, guilds=guilds)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\app_commands\tree.py", line 373, in add_command
+    raise CommandAlreadyRegistered(name, None)
+discord.app_commands.errors.CommandAlreadyRegistered: Command 'autorole' already registered.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\discord bot\bot.py", line 108, in setup_hook
+    await self.load_extension(cog_path)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 952, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.autorole.cog' raised an error: CommandAlreadyRegistered: Command 'autorole' already registered.
+
+
+2026-06-04 14:59:43 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 14:59:43 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 14:59:43 | ERROR    | __main__:setup_hook:112 - ❌ Failed to load cogs.compliance.cog: Extension 'cogs.compliance.cog' raised an error: CommandAlreadyRegistered: Command 'gdpr' already registered.
+
+2026-06-04 14:59:43 | ERROR    | __main__:setup_hook:113 - Traceback (most recent call last):
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 947, in _load_from_module_spec
+    await setup(self)
+  File "E:\discord bot\cogs\compliance\cog.py", line 235, in setup
+    await bot.add_cog(cog)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 783, in add_cog
+    cog = await cog._inject(self, override=override, guild=guild, guilds=guilds)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\cog.py", line 723, in _inject
+    bot.tree.add_command(command, override=override, guild=guild, guilds=guilds)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\app_commands\tree.py", line 373, in add_command
+    raise CommandAlreadyRegistered(name, None)
+discord.app_commands.errors.CommandAlreadyRegistered: Command 'gdpr' already registered.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\discord bot\bot.py", line 108, in setup_hook
+    await self.load_extension(cog_path)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 952, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.compliance.cog' raised an error: CommandAlreadyRegistered: Command 'gdpr' already registered.
+
+
+2026-06-04 14:59:44 | ERROR    | __main__:setup_hook:112 - ❌ Failed to load cogs.health.cog: Extension 'cogs.health.cog' raised an error: CommandAlreadyRegistered: Command 'health' already registered.
+
+2026-06-04 14:59:44 | ERROR    | __main__:setup_hook:113 - Traceback (most recent call last):
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 947, in _load_from_module_spec
+    await setup(self)
+  File "E:\discord bot\cogs\health\cog.py", line 360, in setup
+    await bot.add_cog(cog)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 783, in add_cog
+    cog = await cog._inject(self, override=override, guild=guild, guilds=guilds)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\cog.py", line 723, in _inject
+    bot.tree.add_command(command, override=override, guild=guild, guilds=guilds)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\app_commands\tree.py", line 373, in add_command
+    raise CommandAlreadyRegistered(name, None)
+discord.app_commands.errors.CommandAlreadyRegistered: Command 'health' already registered.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\discord bot\bot.py", line 108, in setup_hook
+    await self.load_extension(cog_path)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 952, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.health.cog' raised an error: CommandAlreadyRegistered: Command 'health' already registered.
+
+
+2026-06-04 14:59:44 | ERROR    | __main__:setup_hook:112 - ❌ Failed to load cogs.moderation.cog: Extension 'cogs.moderation.cog' raised an error: TypeError: Commands or listeners must not start with cog_ or bot_ (in method ModerationCog.cog_group)
+
+2026-06-04 14:59:44 | ERROR    | __main__:setup_hook:113 - Traceback (most recent call last):
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 762, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "E:\discord bot\cogs\moderation\cog.py", line 14, in <module>
+    class ModerationCog(commands.Cog):
+    ...<448 lines>...
+                await interaction.followup.send(f"❌ Failed to unload extension `{target}`: {e}")
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\cog.py", line 230, in __new__
+    raise TypeError(no_bot_cog.format(base, elem))
+TypeError: Commands or listeners must not start with cog_ or bot_ (in method ModerationCog.cog_group)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\discord bot\bot.py", line 108, in setup_hook
+    await self.load_extension(cog_path)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.moderation.cog' raised an error: TypeError: Commands or listeners must not start with cog_ or bot_ (in method ModerationCog.cog_group)
+
+
+2026-06-04 14:59:44 | ERROR    | __main__:setup_hook:112 - ❌ Failed to load cogs.utility.cog: Extension 'cogs.utility.cog' raised an error: CommandAlreadyRegistered: Command 'welcome' already registered.
+
+2026-06-04 14:59:44 | ERROR    | __main__:setup_hook:113 - Traceback (most recent call last):
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 947, in _load_from_module_spec
+    await setup(self)
+  File "E:\discord bot\cogs\utility\cog.py", line 438, in setup
+    await bot.add_cog(cog)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 783, in add_cog
+    cog = await cog._inject(self, override=override, guild=guild, guilds=guilds)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\cog.py", line 723, in _inject
+    bot.tree.add_command(command, override=override, guild=guild, guilds=guilds)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\app_commands\tree.py", line 373, in add_command
+    raise CommandAlreadyRegistered(name, None)
+discord.app_commands.errors.CommandAlreadyRegistered: Command 'welcome' already registered.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\discord bot\bot.py", line 108, in setup_hook
+    await self.load_extension(cog_path)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 952, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.utility.cog' raised an error: CommandAlreadyRegistered: Command 'welcome' already registered.
+
+
+2026-06-04 14:59:49 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-04 15:06:14 | ERROR    | __main__:setup_hook:112 - ❌ Failed to load cogs.autorole.cog: Extension 'cogs.autorole.cog' raised an error: CommandAlreadyRegistered: Command 'autorole' already registered.
+
+2026-06-04 15:06:14 | ERROR    | __main__:setup_hook:113 - Traceback (most recent call last):
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 947, in _load_from_module_spec
+    await setup(self)
+  File "E:\discord bot\cogs\autorole\cog.py", line 467, in setup
+    await bot.add_cog(cog)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 783, in add_cog
+    cog = await cog._inject(self, override=override, guild=guild, guilds=guilds)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\cog.py", line 723, in _inject
+    bot.tree.add_command(command, override=override, guild=guild, guilds=guilds)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\app_commands\tree.py", line 373, in add_command
+    raise CommandAlreadyRegistered(name, None)
+discord.app_commands.errors.CommandAlreadyRegistered: Command 'autorole' already registered.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\discord bot\bot.py", line 108, in setup_hook
+    await self.load_extension(cog_path)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 952, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.autorole.cog' raised an error: CommandAlreadyRegistered: Command 'autorole' already registered.
+
+
+2026-06-04 15:06:14 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 15:06:14 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 15:06:14 | ERROR    | __main__:setup_hook:112 - ❌ Failed to load cogs.compliance.cog: Extension 'cogs.compliance.cog' raised an error: CommandAlreadyRegistered: Command 'gdpr' already registered.
+
+2026-06-04 15:06:14 | ERROR    | __main__:setup_hook:113 - Traceback (most recent call last):
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 947, in _load_from_module_spec
+    await setup(self)
+  File "E:\discord bot\cogs\compliance\cog.py", line 235, in setup
+    await bot.add_cog(cog)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 783, in add_cog
+    cog = await cog._inject(self, override=override, guild=guild, guilds=guilds)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\cog.py", line 723, in _inject
+    bot.tree.add_command(command, override=override, guild=guild, guilds=guilds)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\app_commands\tree.py", line 373, in add_command
+    raise CommandAlreadyRegistered(name, None)
+discord.app_commands.errors.CommandAlreadyRegistered: Command 'gdpr' already registered.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\discord bot\bot.py", line 108, in setup_hook
+    await self.load_extension(cog_path)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 952, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.compliance.cog' raised an error: CommandAlreadyRegistered: Command 'gdpr' already registered.
+
+
+2026-06-04 15:06:15 | ERROR    | __main__:setup_hook:112 - ❌ Failed to load cogs.health.cog: Extension 'cogs.health.cog' raised an error: CommandAlreadyRegistered: Command 'health' already registered.
+
+2026-06-04 15:06:15 | ERROR    | __main__:setup_hook:113 - Traceback (most recent call last):
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 947, in _load_from_module_spec
+    await setup(self)
+  File "E:\discord bot\cogs\health\cog.py", line 360, in setup
+    await bot.add_cog(cog)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 783, in add_cog
+    cog = await cog._inject(self, override=override, guild=guild, guilds=guilds)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\cog.py", line 723, in _inject
+    bot.tree.add_command(command, override=override, guild=guild, guilds=guilds)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\app_commands\tree.py", line 373, in add_command
+    raise CommandAlreadyRegistered(name, None)
+discord.app_commands.errors.CommandAlreadyRegistered: Command 'health' already registered.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\discord bot\bot.py", line 108, in setup_hook
+    await self.load_extension(cog_path)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 952, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.health.cog' raised an error: CommandAlreadyRegistered: Command 'health' already registered.
+
+
+2026-06-04 15:06:15 | ERROR    | __main__:setup_hook:112 - ❌ Failed to load cogs.moderation.cog: Extension 'cogs.moderation.cog' raised an error: TypeError: Commands or listeners must not start with cog_ or bot_ (in method ModerationCog.cog_group)
+
+2026-06-04 15:06:15 | ERROR    | __main__:setup_hook:113 - Traceback (most recent call last):
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 762, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "E:\discord bot\cogs\moderation\cog.py", line 14, in <module>
+    class ModerationCog(commands.Cog):
+    ...<448 lines>...
+                await interaction.followup.send(f"❌ Failed to unload extension `{target}`: {e}")
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\cog.py", line 230, in __new__
+    raise TypeError(no_bot_cog.format(base, elem))
+TypeError: Commands or listeners must not start with cog_ or bot_ (in method ModerationCog.cog_group)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\discord bot\bot.py", line 108, in setup_hook
+    await self.load_extension(cog_path)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.moderation.cog' raised an error: TypeError: Commands or listeners must not start with cog_ or bot_ (in method ModerationCog.cog_group)
+
+
+2026-06-04 15:06:15 | ERROR    | __main__:setup_hook:112 - ❌ Failed to load cogs.utility.cog: Extension 'cogs.utility.cog' raised an error: CommandAlreadyRegistered: Command 'welcome' already registered.
+
+2026-06-04 15:06:15 | ERROR    | __main__:setup_hook:113 - Traceback (most recent call last):
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 947, in _load_from_module_spec
+    await setup(self)
+  File "E:\discord bot\cogs\utility\cog.py", line 438, in setup
+    await bot.add_cog(cog)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 783, in add_cog
+    cog = await cog._inject(self, override=override, guild=guild, guilds=guilds)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\cog.py", line 723, in _inject
+    bot.tree.add_command(command, override=override, guild=guild, guilds=guilds)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\app_commands\tree.py", line 373, in add_command
+    raise CommandAlreadyRegistered(name, None)
+discord.app_commands.errors.CommandAlreadyRegistered: Command 'welcome' already registered.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\discord bot\bot.py", line 108, in setup_hook
+    await self.load_extension(cog_path)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 952, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.utility.cog' raised an error: CommandAlreadyRegistered: Command 'welcome' already registered.
+
+
+2026-06-04 15:06:20 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-04 15:07:40 | ERROR    | __main__:setup_hook:112 - ❌ Failed to load cogs.autorole.cog: Extension 'cogs.autorole.cog' raised an error: CommandAlreadyRegistered: Command 'autorole' already registered.
+
+2026-06-04 15:07:40 | ERROR    | __main__:setup_hook:113 - Traceback (most recent call last):
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 947, in _load_from_module_spec
+    await setup(self)
+  File "E:\discord bot\cogs\autorole\cog.py", line 467, in setup
+    await bot.add_cog(cog)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 783, in add_cog
+    cog = await cog._inject(self, override=override, guild=guild, guilds=guilds)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\cog.py", line 723, in _inject
+    bot.tree.add_command(command, override=override, guild=guild, guilds=guilds)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\app_commands\tree.py", line 373, in add_command
+    raise CommandAlreadyRegistered(name, None)
+discord.app_commands.errors.CommandAlreadyRegistered: Command 'autorole' already registered.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\discord bot\bot.py", line 108, in setup_hook
+    await self.load_extension(cog_path)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 952, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.autorole.cog' raised an error: CommandAlreadyRegistered: Command 'autorole' already registered.
+
+
+2026-06-04 15:07:40 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 15:07:40 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 15:07:40 | ERROR    | __main__:setup_hook:112 - ❌ Failed to load cogs.compliance.cog: Extension 'cogs.compliance.cog' raised an error: CommandAlreadyRegistered: Command 'gdpr' already registered.
+
+2026-06-04 15:07:40 | ERROR    | __main__:setup_hook:113 - Traceback (most recent call last):
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 947, in _load_from_module_spec
+    await setup(self)
+  File "E:\discord bot\cogs\compliance\cog.py", line 235, in setup
+    await bot.add_cog(cog)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 783, in add_cog
+    cog = await cog._inject(self, override=override, guild=guild, guilds=guilds)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\cog.py", line 723, in _inject
+    bot.tree.add_command(command, override=override, guild=guild, guilds=guilds)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\app_commands\tree.py", line 373, in add_command
+    raise CommandAlreadyRegistered(name, None)
+discord.app_commands.errors.CommandAlreadyRegistered: Command 'gdpr' already registered.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\discord bot\bot.py", line 108, in setup_hook
+    await self.load_extension(cog_path)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 952, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.compliance.cog' raised an error: CommandAlreadyRegistered: Command 'gdpr' already registered.
+
+
+2026-06-04 15:07:41 | ERROR    | __main__:setup_hook:112 - ❌ Failed to load cogs.health.cog: Extension 'cogs.health.cog' raised an error: CommandAlreadyRegistered: Command 'health' already registered.
+
+2026-06-04 15:07:41 | ERROR    | __main__:setup_hook:113 - Traceback (most recent call last):
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 947, in _load_from_module_spec
+    await setup(self)
+  File "E:\discord bot\cogs\health\cog.py", line 360, in setup
+    await bot.add_cog(cog)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 783, in add_cog
+    cog = await cog._inject(self, override=override, guild=guild, guilds=guilds)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\cog.py", line 723, in _inject
+    bot.tree.add_command(command, override=override, guild=guild, guilds=guilds)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\app_commands\tree.py", line 373, in add_command
+    raise CommandAlreadyRegistered(name, None)
+discord.app_commands.errors.CommandAlreadyRegistered: Command 'health' already registered.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\discord bot\bot.py", line 108, in setup_hook
+    await self.load_extension(cog_path)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 952, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.health.cog' raised an error: CommandAlreadyRegistered: Command 'health' already registered.
+
+
+2026-06-04 15:07:41 | ERROR    | __main__:setup_hook:112 - ❌ Failed to load cogs.moderation.cog: Extension 'cogs.moderation.cog' raised an error: TypeError: Commands or listeners must not start with cog_ or bot_ (in method ModerationCog.cog_group)
+
+2026-06-04 15:07:41 | ERROR    | __main__:setup_hook:113 - Traceback (most recent call last):
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 762, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "E:\discord bot\cogs\moderation\cog.py", line 14, in <module>
+    class ModerationCog(commands.Cog):
+    ...<448 lines>...
+                await interaction.followup.send(f"❌ Failed to unload extension `{target}`: {e}")
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\cog.py", line 230, in __new__
+    raise TypeError(no_bot_cog.format(base, elem))
+TypeError: Commands or listeners must not start with cog_ or bot_ (in method ModerationCog.cog_group)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\discord bot\bot.py", line 108, in setup_hook
+    await self.load_extension(cog_path)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.moderation.cog' raised an error: TypeError: Commands or listeners must not start with cog_ or bot_ (in method ModerationCog.cog_group)
+
+
+2026-06-04 15:07:41 | ERROR    | __main__:setup_hook:112 - ❌ Failed to load cogs.utility.cog: Extension 'cogs.utility.cog' raised an error: CommandAlreadyRegistered: Command 'welcome' already registered.
+
+2026-06-04 15:07:41 | ERROR    | __main__:setup_hook:113 - Traceback (most recent call last):
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 947, in _load_from_module_spec
+    await setup(self)
+  File "E:\discord bot\cogs\utility\cog.py", line 438, in setup
+    await bot.add_cog(cog)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 783, in add_cog
+    cog = await cog._inject(self, override=override, guild=guild, guilds=guilds)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\cog.py", line 723, in _inject
+    bot.tree.add_command(command, override=override, guild=guild, guilds=guilds)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\discord\app_commands\tree.py", line 373, in add_command
+    raise CommandAlreadyRegistered(name, None)
+discord.app_commands.errors.CommandAlreadyRegistered: Command 'welcome' already registered.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\discord bot\bot.py", line 108, in setup_hook
+    await self.load_extension(cog_path)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 952, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.utility.cog' raised an error: CommandAlreadyRegistered: Command 'welcome' already registered.
+
+
+2026-06-04 15:07:46 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-04 15:16:29 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 15:16:29 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 15:16:32 | ERROR    | __main__:setup_hook:137 - ❌ Command sync failed: invalid literal for int() with base 10: 'your_discord_server_id_here'
+
+2026-06-04 15:16:32 | CRITICAL | __main__:main:292 - Bot encountered unhandled execution error: invalid literal for int() with base 10: 'your_discord_server_id_here'
+
+2026-06-04 15:16:32 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-04 15:16:32 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-04 15:18:27 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 15:18:27 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 15:18:32 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-04 15:28:28 | ERROR    | cogs.health.cog:send_alert_webhook:99 - Webhook failed with status 404
+
+2026-06-04 15:38:29 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 15:38:29 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 15:38:35 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-04 15:43:36 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 15:43:36 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 15:43:37 | ERROR    | __main__:setup_hook:112 - ❌ Failed to load cogs.health.cog: Extension 'cogs.health.cog' raised an error: AssertionError: View function mapping is overwriting an existing endpoint function: admin_commands
+
+2026-06-04 15:43:37 | ERROR    | __main__:setup_hook:113 - Traceback (most recent call last):
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 762, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "E:\discord bot\cogs\health\cog.py", line 13, in <module>
+    import dashboard
+  File "E:\discord bot\dashboard.py", line 545, in <module>
+    @app.route("/admin/commands", methods=["GET", "POST"])
+     ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\flask\sansio\scaffold.py", line 364, in decorator
+    self.add_url_rule(rule, endpoint, f, **options)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\flask\sansio\scaffold.py", line 44, in wrapper_func
+    return f(self, *args, **kwargs)
+  File "E:\discord bot\.venv\Lib\site-packages\flask\sansio\app.py", line 659, in add_url_rule
+    raise AssertionError(
+    ...<2 lines>...
+    )
+AssertionError: View function mapping is overwriting an existing endpoint function: admin_commands
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\discord bot\bot.py", line 108, in setup_hook
+    await self.load_extension(cog_path)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.health.cog' raised an error: AssertionError: View function mapping is overwriting an existing endpoint function: admin_commands
+
+
+2026-06-04 15:43:37 | CRITICAL | __main__:main:296 - Bot encountered unhandled execution error: Extension 'cogs.health.cog' raised an error: AssertionError: View function mapping is overwriting an existing endpoint function: admin_commands
+
+2026-06-04 15:43:37 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-04 15:43:37 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-04 15:46:02 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 15:46:02 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 15:46:02 | ERROR    | __main__:setup_hook:112 - ❌ Failed to load cogs.health.cog: Extension 'cogs.health.cog' raised an error: AssertionError: View function mapping is overwriting an existing endpoint function: admin_commands
+
+2026-06-04 15:46:02 | ERROR    | __main__:setup_hook:113 - Traceback (most recent call last):
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 762, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "E:\discord bot\cogs\health\cog.py", line 13, in <module>
+    import dashboard
+  File "E:\discord bot\dashboard.py", line 545, in <module>
+    @app.route("/admin/commands", methods=["GET", "POST"])
+     ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\flask\sansio\scaffold.py", line 364, in decorator
+    self.add_url_rule(rule, endpoint, f, **options)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\discord bot\.venv\Lib\site-packages\flask\sansio\scaffold.py", line 44, in wrapper_func
+    return f(self, *args, **kwargs)
+  File "E:\discord bot\.venv\Lib\site-packages\flask\sansio\app.py", line 659, in add_url_rule
+    raise AssertionError(
+    ...<2 lines>...
+    )
+AssertionError: View function mapping is overwriting an existing endpoint function: admin_commands
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\discord bot\bot.py", line 108, in setup_hook
+    await self.load_extension(cog_path)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.health.cog' raised an error: AssertionError: View function mapping is overwriting an existing endpoint function: admin_commands
+
+
+2026-06-04 15:46:02 | CRITICAL | __main__:main:296 - Bot encountered unhandled execution error: Extension 'cogs.health.cog' raised an error: AssertionError: View function mapping is overwriting an existing endpoint function: admin_commands
+
+2026-06-04 15:46:03 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-04 15:46:03 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-04 15:48:26 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 15:48:26 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 15:48:32 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-04 15:56:04 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 15:56:04 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 15:56:11 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-04 16:16:06 | ERROR    | cogs.health.cog:send_alert_webhook:99 - Webhook failed with status 404
+
+2026-06-04 20:19:22 | ERROR    | cogs.events.cog:on_member_join:79 - Failed to kick underage user wolf040538: 403 Forbidden (error code: 50013): Missing Permissions
+
+2026-06-04 20:21:06 | ERROR    | cogs.health.cog:send_alert_webhook:99 - Webhook failed with status 404
+
+2026-06-04 20:26:06 | ERROR    | cogs.health.cog:send_alert_webhook:99 - Webhook failed with status 404
+
+2026-06-04 21:46:46 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 21:46:46 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 21:47:01 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-04 23:25:12 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 23:25:12 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-04 23:25:20 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-05 00:35:43 | ERROR    | dashboard:process_bulk_role:449 - Bulk role error on 1370099600375025724: 403 Forbidden (error code: 50013): Missing Permissions
+
+2026-06-05 00:36:26 | ERROR    | dashboard:process_bulk_role:449 - Bulk role error on 1370099600375025724: 403 Forbidden (error code: 50013): Missing Permissions
+
+2026-06-05 00:38:51 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 00:38:51 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 00:38:59 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-05 00:41:53 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 00:41:53 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 00:42:00 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-05 00:43:04 | ERROR    | dashboard:process_bulk_role:460 - Bulk role permission error on 1370099600375025724: 403 Forbidden (error code: 50013): Missing Permissions
+
+2026-06-05 00:49:43 | ERROR    | dashboard:process_bulk_role:460 - Bulk role permission error on 1370099600375025724: 403 Forbidden (error code: 50013): Missing Permissions
+
+2026-06-05 00:49:47 | ERROR    | dashboard:process_bulk_role:460 - Bulk role permission error on 1370099600375025724: 403 Forbidden (error code: 50013): Missing Permissions
+
+2026-06-05 00:49:58 | ERROR    | dashboard:process_bulk_role:460 - Bulk role permission error on 1370099600375025724: 403 Forbidden (error code: 50013): Missing Permissions
+
+2026-06-05 00:49:59 | ERROR    | dashboard:process_bulk_role:460 - Bulk role permission error on 1370099600375025724: 403 Forbidden (error code: 50013): Missing Permissions
+
+2026-06-05 00:50:00 | ERROR    | dashboard:process_bulk_role:460 - Bulk role permission error on 1370099600375025724: 403 Forbidden (error code: 50013): Missing Permissions
+
+2026-06-05 00:50:00 | ERROR    | dashboard:process_bulk_role:460 - Bulk role permission error on 1370099600375025724: 403 Forbidden (error code: 50013): Missing Permissions
+
+2026-06-05 00:50:01 | ERROR    | dashboard:process_bulk_role:460 - Bulk role permission error on 1370099600375025724: 403 Forbidden (error code: 50013): Missing Permissions
+
+2026-06-05 00:54:08 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 00:54:08 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 00:54:15 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-05 00:59:10 | ERROR    | cogs.health.cog:send_alert_webhook:99 - Webhook failed with status 404
+
+2026-06-05 02:01:47 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 02:01:47 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 02:01:56 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-05 02:53:19 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 02:53:19 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 02:53:26 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-05 02:58:13 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 02:58:13 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 02:58:22 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-05 02:59:47 | ERROR    | utils.music_source:from_url:71 - Error extracting info for https://www.youtube.com/watch?v=9LuE0YsEojI: <lambda>() got an unexpected keyword argument 'before'
+
+2026-06-05 03:02:35 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 03:02:35 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 03:02:43 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-05 13:44:46 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 13:44:46 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 13:44:55 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-05 13:49:26 | ERROR    | utils.music_source:from_url:71 - Error extracting info for https://open.spotify.com/track/5yvVYFDUpbnjcnRBgjwTzM?si=069c78ad4fb1422b: [0;31mERROR:[0m [DRM] The requested site is known to use DRM protection. It will [0;94mNOT[0m be supported.
+       Please [0;31mDO NOT[0m open an issue, unless you have evidence that the video is not DRM protected
+
+2026-06-05 13:59:50 | ERROR    | cogs.health.cog:send_alert_webhook:99 - Webhook failed with status 404
+
+2026-06-05 14:29:28 | ERROR    | utils.music_player:playback_loop:59 - Failed to create source for مروان بابلو - فليكسين | Marwan Pablo - Flexin: E:\\Jarvis\\resources\\ffmpeg\\bin\\ffmpeg.exe was not found.
+
+2026-06-05 14:30:03 | ERROR    | utils.music_player:playback_loop:59 - Failed to create source for مروان بابلو - فليكسين | Marwan Pablo - Flexin: E:\\Jarvis\\resources\\ffmpeg\\bin\\ffmpeg.exe was not found.
+
+2026-06-05 14:40:43 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 14:40:43 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 14:40:51 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-05 14:44:31 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 14:44:31 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 14:44:38 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-05 14:57:42 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 14:57:42 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 14:57:50 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-05 15:10:09 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 15:10:09 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 15:10:17 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-05 15:27:38 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 15:27:38 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 15:27:40 | ERROR    | __main__:setup_hook:112 - ❌ Failed to load cogs.music.cog: Extension 'cogs.music.cog' raised an error: SyntaxError: unterminated string literal (detected at line 54) (cog.py, line 54)
+
+2026-06-05 15:27:40 | ERROR    | __main__:setup_hook:113 - Traceback (most recent call last):
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 935, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 758, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 896, in get_code
+  File "<frozen importlib._bootstrap_external>", line 826, in source_to_code
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "E:\discord bot\cogs\music\cog.py", line 54
+    logger.info(" Connecting to channel\); await channel.connect(); logger.info(\Connected\)
+                ^
+SyntaxError: unterminated string literal (detected at line 54)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\discord bot\bot.py", line 108, in setup_hook
+    await self.load_extension(cog_path)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1013, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 938, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.music.cog' raised an error: SyntaxError: unterminated string literal (detected at line 54) (cog.py, line 54)
+
+
+2026-06-05 15:27:40 | CRITICAL | __main__:main:296 - Bot encountered unhandled execution error: Extension 'cogs.music.cog' raised an error: SyntaxError: unterminated string literal (detected at line 54) (cog.py, line 54)
+
+2026-06-05 15:27:41 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-05 15:27:41 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-05 15:28:42 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 15:28:42 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 15:28:49 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-05 16:03:44 | ERROR    | cogs.health.cog:send_alert_webhook:99 - Webhook failed with status 404
+
+2026-06-05 16:06:50 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 16:06:50 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 16:06:58 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-05 16:11:58 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 16:11:58 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 16:12:06 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-05 16:17:10 | ERROR    | utils.music_player:playback_loop:77 - Error in playback loop for guild 1450204870064996384: Not connected to voice.
+
+2026-06-05 16:20:15 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 16:20:15 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 16:20:22 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-05 16:35:25 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 16:35:25 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 16:35:32 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-05 16:41:47 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 16:41:47 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 16:41:53 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-05 16:43:11 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-05 16:43:11 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
