@@ -1,0 +1,31 @@
+{
+  "autorole": {
+    "enabled": true,
+    "delay_seconds": 2,
+    "roles": [],
+    "exclude_bots": true,
+    "require_verification": true,
+    "log_channel_id": null
+  },
+  "welcome": {
+    "enabled": true,
+    "channel_id": null,
+    "template": "Welcome to {server}, {user}! You are member #{member_count}.",
+    "dm_welcome": false,
+    "send_dm": false,
+    "enable_verification_button": true
+  },
+  "verification": {
+    "method": "button",
+    "timeout_hours": 24,
+    "auto_kick": true,
+    "verified_role_id": null,
+    "unverified_role_id": null
+  },
+  "raid_protection": {
+    "enabled": false,
+    "join_velocity_threshold": 4,
+    "account_age_hours": 24
+  },
+  "ffmpeg_path": "C:\\\\Users\\\\moham\\\\AppData\\\\Local\\\\Microsoft\\\\WinGet\\\\Packages\\\\Gyan.FFmpeg.Essentials_Microsoft.Winget.Source_8wekyb3d8bbwe\\\\ffmpeg-8.1.1-essentials_build\\\\bin\\\\ffmpeg.exe"
+}

@@ -38,9 +38,17 @@ logger.add(
     "logs/bot.log",
     rotation="10 MB",
     retention=5,
-    level="INFO",
+    level="DEBUG",
     format="{time:YYYY-MM-DD HH:mm:ss} | {level: <8} | {name}:{function}:{line} - {message}"
 )
+
+# Enable discord.py logging
+import logging
+discord_logger = logging.getLogger('discord')
+discord_logger.setLevel(logging.DEBUG)
+handler = logging.FileHandler(filename='logs/bot.log', encoding='utf-8', mode='a')
+handler.setFormatter(logging.Formatter('%(asctime)s | %(levelname)-8s | %(name)s | %(message)s'))
+discord_logger.addHandler(handler)
 
 # Log to errors file
 logger.add(

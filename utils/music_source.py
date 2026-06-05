@@ -73,13 +73,12 @@ class YTDLSource(discord.PCMVolumeTransformer):
             raise e
 
     @classmethod
-    def create_source(cls, data: dict, ffmpeg_path: str = "ffmpeg", volume: float = 1.0) -> 'YTDLSource':
+    def create_source(cls, data: dict, ffmpeg_path: str = "ffmpeg", volume: float = 1.0):
         """Creates an audio source from pre-fetched data."""
-        # Some extractors don't return the direct audio URL immediately
-        # But yt-dlp usually provides 'url' which is the stream URL if download=False
         stream_url = data.get('url')
         if not stream_url:
             raise ValueError("Stream URL not found in extracted data")
             
         source = discord.FFmpegPCMAudio(stream_url, executable=ffmpeg_path, **ffmpeg_options)
-        return cls(source, data=data, volume=volume)
+        # Bypass PCMVolumeTransformer completely to avoid audioop-lts segfault on Win/3.14
+        return source
