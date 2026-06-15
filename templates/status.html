@@ -3,47 +3,115 @@
 {% block title %}Dashboard | Status{% endblock %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto space-y-6">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <!-- Metric Cards -->
-        <div class="glass-panel rounded-xl p-5 shadow-lg">
-            <div class="text-xs font-semibold text-muted uppercase tracking-wider mb-2">Uptime</div>
-            <div class="text-2xl font-bold text-white">{{ uptime }}</div>
+<div class="max-w-7xl mx-auto space-y-8">
+    
+    <!-- Metrics Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- Uptime -->
+        <div class="glass-panel glass-panel-hover rounded-2xl p-6 flex items-center justify-between">
+            <div>
+                <div class="text-[10px] font-bold text-muted uppercase tracking-widest mb-1.5">Uptime</div>
+                <div class="text-2xl font-bold text-white tracking-tight">{{ uptime }}</div>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
         </div>
         
-        <div class="glass-panel rounded-xl p-5 shadow-lg">
-            <div class="text-xs font-semibold text-muted uppercase tracking-wider mb-2">Memory Usage</div>
-            <div class="text-2xl font-bold text-white">{{ mem_usage }} MB</div>
+        <!-- Memory Usage -->
+        <div class="glass-panel glass-panel-hover rounded-2xl p-6 flex items-center justify-between">
+            <div>
+                <div class="text-[10px] font-bold text-muted uppercase tracking-widest mb-1.5">Memory Usage</div>
+                <div class="text-2xl font-bold text-white tracking-tight">{{ mem_usage }} MB</div>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                </svg>
+            </div>
         </div>
         
-        <div class="glass-panel rounded-xl p-5 shadow-lg">
-            <div class="text-xs font-semibold text-muted uppercase tracking-wider mb-2">CPU Util</div>
-            <div class="text-2xl font-bold text-white">{{ cpu_usage }}%</div>
+        <!-- CPU Util -->
+        <div class="glass-panel glass-panel-hover rounded-2xl p-6 flex items-center justify-between">
+            <div>
+                <div class="text-[10px] font-bold text-muted uppercase tracking-widest mb-1.5">CPU Util</div>
+                <div class="text-2xl font-bold text-white tracking-tight">{{ cpu_usage }}%</div>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+            </div>
         </div>
         
-        <div class="glass-panel rounded-xl p-5 shadow-lg">
-            <div class="text-xs font-semibold text-muted uppercase tracking-wider mb-2">WS Latency</div>
-            <div class="text-2xl font-bold text-white">{{ ws_latency }} ms</div>
+        <!-- WS Latency -->
+        <div class="glass-panel glass-panel-hover rounded-2xl p-6 flex items-center justify-between">
+            <div>
+                <div class="text-[10px] font-bold text-muted uppercase tracking-widest mb-1.5">WS Latency</div>
+                <div class="text-2xl font-bold text-white tracking-tight">{{ ws_latency }} ms</div>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center text-pink-400">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+            </div>
         </div>
         
-        <div class="glass-panel rounded-xl p-5 shadow-lg">
-            <div class="text-xs font-semibold text-muted uppercase tracking-wider mb-2">Guilds</div>
-            <div class="text-2xl font-bold text-white">{{ guilds_count }}</div>
+        <!-- Guilds -->
+        <div class="glass-panel glass-panel-hover rounded-2xl p-6 flex items-center justify-between">
+            <div>
+                <div class="text-[10px] font-bold text-muted uppercase tracking-widest mb-1.5">Guilds</div>
+                <div class="text-2xl font-bold text-white tracking-tight">{{ guilds_count }}</div>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+                </svg>
+            </div>
         </div>
         
-        <div class="glass-panel rounded-xl p-5 shadow-lg">
-            <div class="text-xs font-semibold text-muted uppercase tracking-wider mb-2">Members</div>
-            <div class="text-2xl font-bold text-white">{{ members_count }}</div>
+        <!-- Members -->
+        <div class="glass-panel glass-panel-hover rounded-2xl p-6 flex items-center justify-between">
+            <div>
+                <div class="text-[10px] font-bold text-muted uppercase tracking-widest mb-1.5">Members</div>
+                <div class="text-2xl font-bold text-white tracking-tight">{{ members_count }}</div>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+            </div>
         </div>
         
-        <div class="glass-panel rounded-xl p-5 shadow-lg">
-            <div class="text-xs font-semibold text-muted uppercase tracking-wider mb-2">Queue Depth</div>
-            <div class="text-2xl font-bold text-white">{{ queue_depth }}</div>
+        <!-- Queue Depth -->
+        <div class="glass-panel glass-panel-hover rounded-2xl p-6 flex items-center justify-between">
+            <div>
+                <div class="text-[10px] font-bold text-muted uppercase tracking-widest mb-1.5">Queue Depth</div>
+                <div class="text-2xl font-bold text-white tracking-tight">{{ queue_depth }}</div>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"></path>
+                </svg>
+            </div>
         </div>
         
-        <div class="glass-panel rounded-xl p-5 shadow-lg border-l-4 {% if err_count > 0 %}border-danger{% else %}border-success{% endif %}">
-            <div class="text-xs font-semibold text-muted uppercase tracking-wider mb-2">Errors (24h)</div>
-            <div class="text-2xl font-bold {% if err_count > 0 %}text-danger{% else %}text-success{% endif %}">{{ err_count }}</div>
+        <!-- Errors (24h) -->
+        <div class="glass-panel rounded-2xl p-6 flex items-center justify-between {% if err_count > 0 %}metric-card-danger{% else %}metric-card-success{% endif %}">
+            <div>
+                <div class="text-[10px] font-bold text-muted uppercase tracking-widest mb-1.5">Errors (24h)</div>
+                <div class="text-2xl font-bold tracking-tight {% if err_count > 0 %}text-rose-400{% else %}text-emerald-400{% endif %}">{{ err_count }}</div>
+            </div>
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center 
+                        {% if err_count > 0 %}bg-rose-500/10 border border-rose-500/20 text-rose-400
+                        {% else %}bg-emerald-500/10 border border-emerald-500/20 text-emerald-400{% endif %}">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+            </div>
         </div>
     </div>
 
@@ -51,17 +119,23 @@
     <div x-data="{ alerts: [] }" 
          x-init="fetch('/alerts').then(r => r.json()).then(d => alerts = d.alerts)">
         <template x-if="alerts.length > 0">
-            <div class="glass-panel rounded-xl overflow-hidden shadow-lg border-warning/30">
-                <div class="bg-warning/10 px-5 py-4 border-b border-warning/20">
-                    <h3 class="font-semibold text-warning flex items-center gap-2">
-                        ⚠️ Active System Alerts
-                    </h3>
+            <div class="glass-panel rounded-2xl overflow-hidden border-amber-500/20 shadow-2xl">
+                <div class="bg-amber-500/5 px-6 py-4 border-b border-white/[0.06] flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/25 flex items-center justify-center text-amber-400">
+                        <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-white text-sm">Active System Alerts</h3>
+                        <p class="text-[10px] text-amber-400/70">Requires attention or system diagnostics</p>
+                    </div>
                 </div>
-                <div class="divide-y divide-white/5">
+                <div class="divide-y divide-white/[0.05]">
                     <template x-for="alert in alerts">
-                        <div class="px-5 py-3 flex justify-between items-center text-sm">
-                            <span class="text-white" x-text="alert.message"></span>
-                            <span class="text-muted text-xs" x-text="new Date(alert.timestamp).toLocaleTimeString()"></span>
+                        <div class="px-6 py-4.5 flex justify-between items-center text-sm transition-colors duration-150 hover:bg-white/[0.01]">
+                            <span class="text-gray-200" x-text="alert.message"></span>
+                            <span class="text-muted text-xs bg-white/5 border border-white/10 rounded-md px-2 py-0.5" x-text="new Date(alert.timestamp).toLocaleTimeString()"></span>
                         </div>
                     </template>
                 </div>
@@ -70,15 +144,57 @@
     </div>
 
     <!-- Logs Section -->
-    <div class="glass-panel rounded-xl overflow-hidden shadow-lg">
-        <div class="px-5 py-4 border-b border-white/5 flex justify-between items-center bg-white/[0.02]">
-            <h3 class="font-semibold text-gray-200">System Output Logs (Last 20)</h3>
-            <button onclick="window.location.reload()" class="text-xs bg-accent hover:bg-accentHover text-white px-3 py-1.5 rounded transition-colors shadow">
-                Refresh Now
+    <div class="glass-panel rounded-2xl overflow-hidden shadow-2xl">
+        <div class="px-6 py-5 border-b border-white/[0.06] flex justify-between items-center bg-white/[0.01]">
+            <div>
+                <h3 class="font-bold text-white text-base">System Logs</h3>
+                <p class="text-xs text-muted">Real-time status updates from the bot</p>
+            </div>
+            <button onclick="window.location.reload()" 
+                    class="group relative overflow-hidden bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 shadow hover:shadow-indigo-500/20 flex items-center gap-1.5 active:scale-[0.98]">
+                <svg class="w-4 h-4 animate-spin-hover" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.253 8H18"></path>
+                </svg>
+                Refresh
             </button>
         </div>
-        <div class="p-4 bg-[#0d111a] border-t border-black/50">
-            <pre class="text-xs font-mono text-gray-300 overflow-x-auto whitespace-pre-wrap max-h-80">{{ logs }}</pre>
+        
+        <div class="p-6 bg-black/45 border-t border-black/30 max-h-[420px] overflow-y-auto custom-logs-container">
+            <div class="space-y-2">
+                {% for line in logs.split('\n') %}
+                    {% if line.strip() %}
+                        {% set parts = line.split(' | ') %}
+                        <div class="flex items-start gap-3 hover:bg-white/[0.02] py-1 px-3 rounded-lg transition-colors duration-150 font-mono text-[11px] leading-relaxed">
+                            {% if parts|length >= 3 %}
+                                <!-- Timestamp -->
+                                <span class="text-muted/60 shrink-0 select-none">{{ parts[0] }}</span>
+                                
+                                <!-- Level -->
+                                {% set level = parts[1].strip() %}
+                                <span class="shrink-0 font-bold uppercase tracking-wider text-[9px] px-1.5 py-0.5 rounded border select-none
+                                    {% if 'ERROR' in level or 'CRITICAL' in level %}bg-rose-500/10 text-rose-400 border-rose-500/20
+                                    {% elif 'WARNING' in level %}bg-amber-500/10 text-amber-400 border-amber-500/20
+                                    {% elif 'DEBUG' in level %}bg-emerald-500/10 text-emerald-400 border-emerald-500/20
+                                    {% else %}bg-indigo-500/10 text-indigo-400 border-indigo-500/20{% endif %}">
+                                    {{ level }}
+                                </span>
+                                
+                                <!-- Message Parts -->
+                                {% set msg_parts = parts[2].split(' - ', 1) %}
+                                {% if msg_parts|length >= 2 %}
+                                    <span class="text-muted/40 shrink-0 select-none font-semibold truncate max-w-[200px]" title="{{ msg_parts[0] }}">{{ msg_parts[0] }}</span>
+                                    <span class="text-gray-300 break-all">{{ msg_parts[1] }}</span>
+                                {% else %}
+                                    <span class="text-gray-300 break-all">{{ parts[2] }}</span>
+                                {% endif %}
+                            {% else %}
+                                <span class="text-muted/40 shrink-0 select-none">SYSTEM</span>
+                                <span class="text-gray-400 break-all">{{ line }}</span>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
     </div>
 </div>
@@ -86,6 +202,12 @@
 
 {% block scripts %}
 <script>
+    // Auto scroll logs to bottom on load
+    const container = document.querySelector('.custom-logs-container');
+    if (container) {
+        container.scrollTop = container.scrollHeight;
+    }
+
     // Auto refresh status every 30s
     setTimeout(() => {
         if(!document.hidden) window.location.reload();

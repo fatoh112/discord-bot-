@@ -29,8 +29,10 @@ async def test_concurrent_joins(tmp_path):
     bot.loop = asyncio.get_running_loop()
     bot.bot_config = MagicMock()
     bot.bot_config.admin_user_ids = [123]
-    bot.bot_config.autorole.delay_seconds = 0.0  # Zero delay for load testing
-    bot.bot_config.autorole.exclude_bots = False
+    guild_config = MagicMock()
+    guild_config.autorole.delay_seconds = 0.0
+    guild_config.autorole.exclude_bots = False
+    bot.bot_config.get_guild.return_value = guild_config
     
     cog = AutoRoleCog(bot)
     

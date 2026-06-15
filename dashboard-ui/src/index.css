@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+@theme {
+  --color-discord-blurple: #5865F2;
+  --color-discord-blurple-hover: #4752C4;
+  --color-discord-dark-gray: #313338;
+  --color-discord-darker-gray: #2b2d31;
+  --color-discord-darkest-gray: #1e1f22;
+  --color-discord-green: #248046;
+  --color-discord-green-hover: #1a6535;
+  --color-discord-red: #da373c;
+  --color-discord-red-hover: #a92b2f;
+  --color-discord-yellow: #f0b232;
+  --color-discord-text-primary: #f2f3f5;
+  --color-discord-text-muted: #949ba4;
+  --color-discord-card: #2b2d31;
+  --color-discord-tooltip: #111214;
+  
+  --font-sans: 'Outfit', 'Inter', 'sans-serif';
+}
+
+body {
+  background-color: var(--color-discord-darkest-gray);
+  color: var(--color-discord-text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar matching Discord style */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e1f22;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2b2d31;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #111214;
+}
+
+/* Custom transitions and animations */
+.transition-all-custom {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

@@ -25,37 +25,46 @@ async def db_connection():
 @pytest.fixture
 def test_config():
     return {
-        "autorole": {
-            "enabled": True,
-            "delay_seconds": 1,
-            "roles": [],
-            "exclude_bots": True,
-            "require_verification": True,
-            "log_channel_id": None
-        },
-        "welcome": {
-            "enabled": False,
-            "channel_id": None,
-            "template": "Welcome to {server}, {user}! You are member #{member_count}.",
-            "dm_welcome": False,
-            "send_dm": False,
-            "enable_verification_button": True
-        },
-        "verification": {
-            "method": "button",
-            "timeout_hours": 24,
-            "auto_kick": True,
-            "verified_role_id": None,
-            "unverified_role_id": None
-        },
-        "raid_protection": {
-            "enabled": False,
-            "join_velocity_threshold": 10,
-            "account_age_hours": 24
+        "database": {
+            "path": "bot.db",
+            "wal_mode": True,
+            "backup_interval_hours": 24
         },
         "permissions": {
             "admin_role_id": None,
             "moderator_role_id": None
+        },
+        "guilds": {
+            "987654321": {
+                "autorole": {
+                    "enabled": True,
+                    "delay_seconds": 1,
+                    "roles": [],
+                    "exclude_bots": True,
+                    "require_verification": True,
+                    "log_channel_id": None
+                },
+                "welcome": {
+                    "enabled": False,
+                    "channel_id": None,
+                    "template": "Welcome to {server}, {user}! You are member #{member_count}.",
+                    "dm_welcome": False,
+                    "send_dm": False,
+                    "enable_verification_button": True
+                },
+                "verification": {
+                    "method": "button",
+                    "timeout_hours": 24,
+                    "auto_kick": True,
+                    "verified_role_id": None,
+                    "unverified_role_id": None
+                },
+                "raid_protection": {
+                    "enabled": False,
+                    "join_velocity_threshold": 10,
+                    "account_age_hours": 24
+                }
+            }
         }
     }
 

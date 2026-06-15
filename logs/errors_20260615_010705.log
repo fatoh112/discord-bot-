@@ -1,0 +1,10 @@
+2026-06-15 01:07:05 | ERROR    | database.db_manager:begin_transaction:82 - Database transaction failed. Changes rolled back. Error: duplicate column name: dashboard_channel_id
+
+2026-06-15 01:07:06 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-15 01:07:06 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-15 01:07:16 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-15 02:12:13 | ERROR    | cogs.health.cog:send_alert_webhook:99 - Webhook failed with status 404
+

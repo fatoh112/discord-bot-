@@ -1,0 +1,37 @@
+2026-06-13 12:18:51 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-13 12:18:51 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-13 12:18:52 | ERROR    | __main__:setup_hook:130 - ❌ Failed to load cogs.music.cog: Extension 'cogs.music.cog' raised an error: SyntaxError: invalid syntax (music_player.py, line 1)
+
+2026-06-13 12:18:52 | ERROR    | __main__:setup_hook:131 - Traceback (most recent call last):
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 962, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 762, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "E:\discord bot\cogs\music\cog.py", line 5, in <module>
+    from utils.music_player import AudioPlayer
+  File "E:\discord bot\utils\music_player.py", line 1
+    // music_player.py - Player state coordination and background embed updater loops
+    ^^
+SyntaxError: invalid syntax
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\discord bot\bot.py", line 126, in setup_hook
+    await self.load_extension(cog_path)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1040, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 965, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.music.cog' raised an error: SyntaxError: invalid syntax (music_player.py, line 1)
+
+
+2026-06-13 12:18:52 | CRITICAL | __main__:main:314 - Bot encountered unhandled execution error: Extension 'cogs.music.cog' raised an error: SyntaxError: invalid syntax (music_player.py, line 1)
+
+2026-06-13 12:18:52 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+
+2026-06-13 12:18:53 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+

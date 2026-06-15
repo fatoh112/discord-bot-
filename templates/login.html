@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Dashboard Login | Antigravity</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -12,43 +12,194 @@
                 extend: {
                     fontFamily: { sans: ['Outfit', 'sans-serif'] },
                     colors: {
-                        bg: '#0b0f19', card: '#151c2c', accent: '#4f46e5',
+                        bg: '#070913',
+                        card: '#0f1629',
+                        accent: '#4f46e5',
+                        accentHover: '#4338ca',
+                        purpleAccent: '#8b5cf6',
                     }
                 }
             }
         }
     </script>
+    <style>
+        body {
+            background-color: #05070f;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(79, 70, 229, 0.15) 0%, transparent 45%),
+                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.04) 0%, transparent 40%);
+            background-attachment: fixed;
+            overflow: hidden;
+        }
+        
+        /* Interactive background blobs */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.35;
+            z-index: 0;
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-20px) scale(1.15);
+            }
+        }
+
+        .glass-card {
+            background: rgba(15, 22, 41, 0.45);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5), 
+                        inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 1.5rem;
+            padding: 1px;
+            background: linear-gradient(to bottom right, rgba(255,255,255,0.12), transparent, rgba(255,255,255,0.03));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        /* Beautiful glowing input */
+        .glass-input {
+            background: rgba(5, 7, 15, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-input:focus {
+            border-color: rgba(99, 102, 241, 0.6);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.25), inset 0 1px 2px rgba(0,0,0,0.5);
+            background: rgba(5, 7, 15, 0.85);
+        }
+
+        /* Gradient Button Animation */
+        .btn-gradient {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #4f46e5 100%);
+            background-size: 200% auto;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-gradient:hover {
+            background-position: right center;
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+            transform: translateY(-1px);
+        }
+        .btn-gradient:active {
+            transform: translateY(1px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+        
+        /* Grid background effect */
+        .grid-bg {
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: center center;
+            z-index: 1;
+            mask-image: radial-gradient(circle at center, black, transparent 80%);
+            -webkit-mask-image: radial-gradient(circle at center, black, transparent 80%);
+        }
+    </style>
 </head>
-<body class="bg-bg text-gray-200 flex items-center justify-center min-h-screen p-4">
-    <div class="bg-card border border-white/5 rounded-2xl p-8 w-full max-w-sm shadow-2xl relative overflow-hidden">
-        <!-- Glow effect -->
-        <div class="absolute -top-10 -right-10 w-32 h-32 bg-accent/20 rounded-full blur-3xl pointer-events-none"></div>
+<body class="text-gray-200 flex items-center justify-center min-h-screen p-4 relative overflow-hidden select-none">
+    
+    <!-- Background Grid -->
+    <div class="grid-bg"></div>
+
+    <!-- Floating Blobs for Organic Visuals -->
+    <div class="blob w-72 h-72 bg-indigo-600 top-12 left-1/4" style="animation-delay: 0s;"></div>
+    <div class="blob w-80 h-80 bg-purple-600 bottom-12 right-1/4" style="animation-delay: -5s;"></div>
+    
+    <!-- Outer Card glow -->
+    <div class="relative w-full max-w-[420px]">
+        <div class="absolute -inset-1.5 bg-gradient-to-r from-indigo-500/30 to-purple-600/30 rounded-3xl blur-2xl opacity-60 transition duration-1000 group-hover:duration-200 pointer-events-none"></div>
         
-        <h2 class="text-3xl font-bold mb-6 bg-gradient-to-br from-indigo-400 to-purple-500 bg-clip-text text-transparent">Sign In</h2>
-        
-        <form method="POST" class="space-y-5">
-            <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">Username</label>
-                <input type="text" name="username" required 
-                       class="w-full bg-[#0d111a] border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/50 transition-all">
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-400 mb-1">Password</label>
-                <input type="password" name="password" required 
-                       class="w-full bg-[#0d111a] border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/50 transition-all">
+        <div class="glass-card rounded-3xl p-10 w-full relative overflow-hidden">
+            
+            <div class="flex flex-col items-center mb-8">
+                <!-- Brand Logo Icon (Hexagon-shaped container) -->
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/25 mb-4 relative group">
+                    <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-indigo-400 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <svg class="w-7 h-7 text-white relative z-10 transform group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <!-- Futuristic custom lightning/control wave icon -->
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 21bc-.107.76.73 1.307 1.348.868L21.03 9.479c.618-.439.317-1.428-.445-1.428h-6.197l1.98-7.555c.096-.367-.21-.715-.595-.715H9.006c-.35 0-.66.216-.786.541L4.354 13.904c-.16.415.148.868.595.868h6.197c.76 0 1.252.798.813 1.428-.152.218-.4.364-.67.432l-.48.176z"></path>
+                    </svg>
+                </div>
+                
+                <h2 class="text-3xl font-extrabold bg-gradient-to-br from-white via-slate-100 to-slate-400 bg-clip-text text-transparent tracking-tight">Antigravity</h2>
+                <p class="text-sm text-gray-400/80 mt-2 font-medium">Authenticate to enter the control panel</p>
             </div>
             
-            <button type="submit" 
-                    class="w-full bg-accent hover:bg-indigo-600 text-white font-semibold py-2.5 rounded-lg transition-colors shadow-lg shadow-accent/20">
-                Authenticate
-            </button>
-        </form>
-        
-        {% if error %}
-        <div class="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm text-center">
-            {{ error }}
+            <form method="POST" class="space-y-6">
+                <!-- Username field -->
+                <div class="space-y-2">
+                    <label class="flex justify-between items-center text-xs font-semibold uppercase tracking-wider text-gray-400 pl-1">
+                        <span>Username</span>
+                        <svg class="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </label>
+                    <input type="text" name="username" placeholder="Enter dashboard username" required autocomplete="username"
+                           class="w-full glass-input rounded-2xl px-5 py-3.5 text-white placeholder-gray-600 focus:outline-none text-sm font-medium">
+                </div>
+                
+                <!-- Password field -->
+                <div class="space-y-2">
+                    <label class="flex justify-between items-center text-xs font-semibold uppercase tracking-wider text-gray-400 pl-1">
+                        <span>Password</span>
+                        <svg class="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </label>
+                    <input type="password" name="password" placeholder="Enter dashboard password" required autocomplete="current-password"
+                           class="w-full glass-input rounded-2xl px-5 py-3.5 text-white placeholder-gray-600 focus:outline-none text-sm font-medium">
+                </div>
+                
+                <!-- Action button -->
+                <button type="submit" 
+                        class="w-full btn-gradient text-white font-bold py-4 rounded-2xl text-sm tracking-wide shadow-lg cursor-pointer">
+                    Sign In to Console
+                </button>
+            </form>
+            
+            {% if error %}
+            <!-- Enhanced animated error indicator -->
+            <div class="mt-6 p-4 bg-rose-500/10 border border-rose-500/20 rounded-2xl text-rose-400 text-xs font-semibold tracking-wide flex items-center gap-3 animate-[shake_0.5s_ease-in-out]">
+                <div class="w-6 h-6 rounded-full bg-rose-500/20 flex items-center justify-center shrink-0">
+                    <svg class="w-3.5 h-3.5 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                </div>
+                <div class="flex-1 leading-normal">{{ error }}</div>
+            </div>
+            {% endif %}
         </div>
-        {% endif %}
     </div>
+
+    <!-- Style for shake animation -->
+    <style>
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-4px); }
+            40%, 80% { transform: translateX(4px); }
+        }
+    </style>
 </body>
 </html>

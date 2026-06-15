@@ -1,6 +1,7 @@
 @echo off
 setlocal EnableDelayedExpansion
 cd /d "%~dp0"
+set "PATH=%~dp0node;%PATH%"
 
 :: Color codes
 set "GREEN=[32m"

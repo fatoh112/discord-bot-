@@ -1,0 +1,6 @@
+2026-06-13 02:51:43 | ERROR    | cogs.health.cog:send_alert_webhook:99 - Webhook failed with status 404
+
+2026-06-13 02:56:43 | ERROR    | cogs.health.cog:send_alert_webhook:99 - Webhook failed with status 404
+
+2026-06-13 03:01:43 | ERROR    | cogs.health.cog:send_alert_webhook:99 - Webhook failed with status 404
+

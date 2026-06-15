@@ -1,0 +1,63 @@
+2026-06-13 12:18:51 | INFO     | database.db_manager:connect:42 - Database connection pool initialized with 5 connections.
+2026-06-13 12:18:51 | INFO     | database.models:create_tables:117 - Initializing bot database tables...
+2026-06-13 12:18:51 | INFO     | database.models:create_tables:133 - Database table initialization completed.
+2026-06-13 12:18:51,039 | INFO     | discord.client | logging in using static token
+2026-06-13 12:18:51,557 | DEBUG    | discord.http | GET https://discord.com/api/v10/users/@me with None has returned 200
+2026-06-13 12:18:51,558 | DEBUG    | discord.http | GET /users/@me has found its initial rate limit bucket hash (78bb8553d9352a5a2f89f9def401287a).
+2026-06-13 12:18:51,558 | DEBUG    | discord.http | GET https://discord.com/api/v10/users/@me has received {'id': '1511854456801595525', 'username': 'Bananahallan 🍌', 'avatar': 'c17ec5120767f42c22efa2c3e443751d', 'discriminator': '3092', 'public_flags': 0, 'flags': 0, 'bot': True, 'banner': 'e5536a7d1b85c23fcb22e57ac841b969', 'accent_color': None, 'global_name': None, 'avatar_decoration_data': None, 'collectibles': None, 'display_name_styles': None, 'banner_color': None, 'clan': None, 'primary_guild': None, 'mfa_enabled': True, 'locale': 'en-US', 'premium_type': 0, 'email': None, 'verified': True, 'bio': ''}
+2026-06-13 12:18:51,856 | DEBUG    | discord.http | GET https://discord.com/api/v10/oauth2/applications/@me with None has returned 200
+2026-06-13 12:18:51,856 | DEBUG    | discord.http | GET /oauth2/applications/@me has found its initial rate limit bucket hash (d28a133af187e91d71d96a223467ce49).
+2026-06-13 12:18:51,857 | DEBUG    | discord.http | GET https://discord.com/api/v10/oauth2/applications/@me has received {'id': '1511854456801595525', 'name': 'Bananahallan 🍌', 'icon': 'd12a0d9c25437befc8edbb1e8238487b', 'description': '', 'type': None, 'summary': '', 'is_monetized': False, 'is_verified': False, 'is_discoverable': False, 'bot': {'id': '1511854456801595525', 'username': 'Bananahallan 🍌', 'avatar': 'c17ec5120767f42c22efa2c3e443751d', 'discriminator': '3092', 'public_flags': 0, 'flags': 0, 'bot': True, 'banner': 'e5536a7d1b85c23fcb22e57ac841b969', 'accent_color': None, 'global_name': None, 'avatar_decoration_data': None, 'collectibles': None, 'display_name_styles': None, 'banner_color': None, 'clan': None, 'primary_guild': None}, 'bot_public': True, 'bot_require_code_grant': False, 'install_params': {'scopes': ['applications.commands'], 'permissions': '0'}, 'integration_types_config': {'0': {'oauth2_install_params': {'scopes': ['applications.commands'], 'permissions': '0'}}, '1': {'oauth2_install_params': {'scopes': ['applications.commands'], 'permissions': '0'}}}, 'verify_key': '06d0acf395462faffe31a353ea758a39f3c8b8bbba32227d6b1245f0590540e4', 'flags': 11051008, 'flags_new': '11051008', 'hook': True, 'storefront_available': False, 'redirect_uris': [], 'interactions_endpoint_url': None, 'role_connections_verification_url': None, 'owner': {'id': '569453828181721088', 'username': '.fatoh', 'avatar': '47a6bf79125a8e84205c2445e664b952', 'discriminator': '0', 'public_flags': 256, 'flags': 256, 'banner': None, 'accent_color': 735967, 'global_name': '𝔽𝕒𝕥𝕠𝕙', 'avatar_decoration_data': None, 'collectibles': {'nameplate': {'sku_id': '1420225379284553810', 'asset': 'nameplates/its_showtime/encore_orange/', 'label': 'COLLECTIBLES_ITS_SHOWTIME_ENCORE_ORANGE_NP_A11Y', 'palette': 'lemon'}}, 'display_name_styles': None, 'banner_color': '#0b3adf', 'clan': None, 'primary_guild': None}, 'approximate_guild_count': 4, 'approximate_user_install_count': 0, 'approximate_user_authorization_count': 0, 'interactions_event_types': [], 'interactions_version': 1, 'explicit_content_filter': 0, 'rpc_application_state': 0, 'store_application_state': 1, 'verification_state': 1, 'integration_public': True, 'integration_require_code_grant': False, 'discoverability_state': 1, 'discovery_eligibility_flags': 2528, 'monetization_state': 1, 'verification_eligibility_flags': 123804, 'monetization_eligibility_flags': 247524, 'bot_approximate_guild_count': 4, 'team': None, 'internal_guild_restriction': 2, 'approved_consoles': [], 'pricing_localization_strategy': 'localized_price_sets'}
+2026-06-13 12:18:51 | INFO     | __main__:setup_hook:106 - Performing pre-flight Gateway Intents check...
+2026-06-13 12:18:51 | INFO     | __main__:setup_hook:119 - Gateway Intents verified successfully.
+2026-06-13 12:18:51 | INFO     | __main__:setup_hook:128 - ✅ Loaded: cogs.autorole.cog
+2026-06-13 12:18:51 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+2026-06-13 12:18:51 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+2026-06-13 12:18:51 | INFO     | __main__:setup_hook:128 - ✅ Loaded: cogs.compliance.cog
+2026-06-13 12:18:51 | INFO     | __main__:setup_hook:128 - ✅ Loaded: cogs.events.cog
+2026-06-13 12:18:52 | INFO     | __main__:setup_hook:128 - ✅ Loaded: cogs.health.cog
+2026-06-13 12:18:52 | INFO     | __main__:setup_hook:128 - ✅ Loaded: cogs.moderation.cog
+2026-06-13 12:18:52 | ERROR    | __main__:setup_hook:130 - ❌ Failed to load cogs.music.cog: Extension 'cogs.music.cog' raised an error: SyntaxError: invalid syntax (music_player.py, line 1)
+2026-06-13 12:18:52 | ERROR    | __main__:setup_hook:131 - Traceback (most recent call last):
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 962, in _load_from_module_spec
+    spec.loader.exec_module(lib)  # type: ignore
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "<frozen importlib._bootstrap_external>", line 762, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "E:\discord bot\cogs\music\cog.py", line 5, in <module>
+    from utils.music_player import AudioPlayer
+  File "E:\discord bot\utils\music_player.py", line 1
+    // music_player.py - Player state coordination and background embed updater loops
+    ^^
+SyntaxError: invalid syntax
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "E:\discord bot\bot.py", line 126, in setup_hook
+    await self.load_extension(cog_path)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 1040, in load_extension
+    await self._load_from_module_spec(spec, name)
+  File "E:\discord bot\.venv\Lib\site-packages\discord\ext\commands\bot.py", line 965, in _load_from_module_spec
+    raise errors.ExtensionFailed(key, e) from e
+discord.ext.commands.errors.ExtensionFailed: Extension 'cogs.music.cog' raised an error: SyntaxError: invalid syntax (music_player.py, line 1)
+
+2026-06-13 12:18:52 | CRITICAL | __main__:main:314 - Bot encountered unhandled execution error: Extension 'cogs.music.cog' raised an error: SyntaxError: invalid syntax (music_player.py, line 1)
+2026-06-13 12:18:52 | INFO     | __main__:write_crash_dump:204 - Writing crash dump details to logs/crash_dump.json...
+2026-06-13 12:18:52 | INFO     | __main__:write_crash_dump:241 - Crash dump successfully written.
+2026-06-13 12:18:52 | INFO     | __main__:shutdown:170 - Graceful shutdown initiated...
+2026-06-13 12:18:52 | INFO     | __main__:shutdown:176 - Unloading cog: AutoRoleCog...
+2026-06-13 12:18:52 | INFO     | cogs.autorole.cog:_save_queue_to_db:32 - Saving active auto-role queue state to database...
+2026-06-13 12:18:52 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+2026-06-13 12:18:52 | INFO     | __main__:shutdown:176 - Unloading cog: ComplianceCog...
+2026-06-13 12:18:52 | INFO     | __main__:shutdown:176 - Unloading cog: EventsCog...
+2026-06-13 12:18:52 | INFO     | __main__:shutdown:176 - Unloading cog: HealthCog...
+2026-06-13 12:18:52 | INFO     | __main__:shutdown:176 - Unloading cog: ModerationCog...
+2026-06-13 12:18:52 | INFO     | __main__:shutdown:188 - Flushing metrics to disk...
+2026-06-13 12:18:52 | INFO     | __main__:shutdown:193 - Closing database connection pool...
+2026-06-13 12:18:53 | INFO     | database.db_manager:disconnect:58 - Database connection pool closed.
+2026-06-13 12:18:53 | INFO     | __main__:shutdown:197 - Closing discord gateway client...
+2026-06-13 12:18:53 | INFO     | cogs.autorole.cog:_save_queue_to_db:32 - Saving active auto-role queue state to database...
+2026-06-13 12:18:53 | INFO     | database.db_manager:connect:42 - Database connection pool initialized with 5 connections.
+2026-06-13 12:18:53 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+2026-06-13 12:18:53 | INFO     | __main__:shutdown:200 - Shutdown confirmation: Clean exit completed.

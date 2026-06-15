@@ -178,30 +178,32 @@ class UtilityCog(commands.Cog):
         """Kicks members failing to complete verification within timeout window."""
         await self.bot.wait_until_ready()
         
-        cfg = self.bot.bot_config.get_guild(str(interaction.guild.id)).verification
-        if not cfg.auto_kick:
-            return
+        for guild in self.bot.guilds:
+            try:
+                g_cfg = self.bot.bot_config.get_guild(str(guild.id))
+                if not g_cfg or not g_cfg.verification or not g_cfg.verification.auto_kick:
+                    continue
 
-        timeout_hours = cfg.timeout_hours
-        # Fetch unverified members older than window
-        rows = await self.db.fetchall(
-            "SELECT user_id, guild_id FROM verification_queue WHERE verified = 0 AND joined_at < datetime('now', '-' || ? || ' hours')",
-            (str(timeout_hours),)
-        )
+                timeout_hours = g_cfg.verification.timeout_hours
+                # Fetch unverified members older than window for this guild
+                rows = await self.db.fetchall(
+                    "SELECT user_id, guild_id FROM verification_queue WHERE guild_id = ? AND verified = 0 AND joined_at < datetime('now', '-' || ? || ' hours')",
+                    (str(guild.id), str(timeout_hours))
+                )
 
-        for r in rows:
-            guild = self.bot.get_guild(int(r["guild_id"]))
-            if guild:
-                member = guild.get_member(int(r["user_id"]))
-                if member:
-                    try:
-                        await member.kick(reason=f"Failed to verify within {timeout_hours} hours.")
-                        logger.info(f"Kicked unverified member {member.name} (ID: {member.id}) due to timeout.")
-                    except Exception as e:
-                        logger.error(f"Failed to kick unverified user {r['user_id']}: {e}")
+                for r in rows:
+                    member = guild.get_member(int(r["user_id"]))
+                    if member:
+                        try:
+                            await member.kick(reason=f"Failed to verify within {timeout_hours} hours.")
+                            logger.info(f"Kicked unverified member {member.name} (ID: {member.id}) due to timeout.")
+                        except Exception as e:
+                            logger.error(f"Failed to kick unverified user {r['user_id']} in guild {guild.id}: {e}")
 
-            # Delete from queue DB
-            await self.db.execute("DELETE FROM verification_queue WHERE user_id = ? AND guild_id = ?", (r["user_id"], r["guild_id"]))
+                    # Delete from queue DB
+                    await self.db.execute("DELETE FROM verification_queue WHERE user_id = ? AND guild_id = ?", (r["user_id"], r["guild_id"]))
+            except Exception as ex:
+                logger.error(f"Error running prune loop for guild {guild.id}: {ex}")
 
     # --- Welcome commands ---
     welcome = app_commands.Group(name="welcome", description="Configure welcome setups")
@@ -427,6 +429,10 @@ class UtilityCog(commands.Cog):
 
         state_msg = "🚨 **SERVER LOCKED DOWN**: Paused auto-role assignment, manual verification captcha modals enforced." if enable else "✅ **LOCKDOWN RELEASED**: Returned server entry gates to standard settings."
         await interaction.response.send_message(state_msg)
+
+
+
+
 
 
 async def setup(bot: commands.Bot) -> None:

@@ -1,0 +1,6 @@
+2026-06-12 23:26:00 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-12 23:26:00 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE audit_logs ADD COLUMN legal_hold INTEGER DEFAULT 0; | Error: duplicate column name: legal_hold
+
+2026-06-12 23:26:08 | ERROR    | database.db_manager:execute:93 - Database execute error. Query: ALTER TABLE verification_queue ADD COLUMN status TEXT DEFAULT 'pending'; | Error: duplicate column name: status
+

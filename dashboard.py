@@ -214,9 +214,15 @@ def status():
             err_count = 0
 
     logs_text = ""
+    import glob
+    log_files = glob.glob("logs/bot_*.log")
     if os.path.exists("logs/bot.log"):
+        log_files.append("logs/bot.log")
+    
+    if log_files:
+        latest_log = max(log_files, key=os.path.getmtime)
         try:
-            with open("logs/bot.log", "r", encoding="utf-8") as f:
+            with open(latest_log, "r", encoding="utf-8") as f:
                 logs_text = "".join(f.readlines()[-20:])
         except Exception:
             logs_text = "Error reading log output."
@@ -238,10 +244,23 @@ def status():
 @app.route("/admin/music")
 def admin_music():
     if not is_authenticated(): return redirect(url_for("login"))
-    guild = get_current_guild()
-    if not guild: return "No guilds found", 400
-    
-    return render_template("admin/music.html")
+    from flask import send_from_directory
+    return send_from_directory(os.path.join(os.path.dirname(__file__), 'dashboard-ui', 'dist'), 'index.html')
+
+@app.route('/assets/<path:path>')
+def serve_react_assets(path):
+    from flask import send_from_directory
+    return send_from_directory(os.path.join(os.path.dirname(__file__), 'dashboard-ui', 'dist', 'assets'), path)
+
+@app.route('/favicon.svg')
+def serve_favicon():
+    from flask import send_from_directory
+    return send_from_directory(os.path.join(os.path.dirname(__file__), 'dashboard-ui', 'dist'), 'favicon.svg')
+
+@app.route('/icons.svg')
+def serve_icons():
+    from flask import send_from_directory
+    return send_from_directory(os.path.join(os.path.dirname(__file__), 'dashboard-ui', 'dist'), 'icons.svg')
 
 @app.route("/admin/autorole", methods=["GET", "POST"])
 def admin_autorole():
@@ -346,7 +365,7 @@ def admin_verification():
 @app.route("/admin/reaction-roles", methods=["GET", "POST"])
 def admin_reaction_roles():
     if not is_authenticated(): return redirect(url_for("login"))
-    return render_template("base.html")
+    return render_template("admin/reaction-roles.html")
 
 @app.route("/admin/raid-protection", methods=["GET", "POST"])
 def admin_raid_protection():
@@ -538,7 +557,7 @@ def api_audit_logs():
         action_filter = request.args.get("action", "")
         
         query = "SELECT id, timestamp, admin_id, action, target_id, reason FROM audit_logs ORDER BY id DESC LIMIT 50"
-        rows = await _bot_ref.db_models.db.fetchall(query)
+        rows = await _bot_ref.models.db.fetchall(query)
         
         results = []
         for r in rows:
@@ -625,7 +644,7 @@ def api_reaction_roles():
     if not is_authenticated() or not _bot_ref: return jsonify({"error": "Unauthorized"}), 401
     
     import asyncio
-    db_models = _bot_ref.db_models
+    db_models = _bot_ref.models
     
     if request.method == "GET":
         future = asyncio.run_coroutine_threadsafe(db_models.get_reaction_roles(), _bot_ref.loop)
@@ -667,7 +686,7 @@ def api_reaction_role_delete(message_id):
     
     async def delete_panel():
         # Optional: try to delete the message if possible
-        await _bot_ref.db_models.delete_reaction_role(message_id)
+        await _bot_ref.models.delete_reaction_role(message_id)
         
     future = asyncio.run_coroutine_threadsafe(delete_panel(), _bot_ref.loop)
     try:

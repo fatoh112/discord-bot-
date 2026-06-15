@@ -5,12 +5,12 @@ from config_schema import BotConfig, load_config
 
 def test_valid_config(test_config):
     config = BotConfig(**test_config)
-    assert config.autorole.enabled is True
+    assert config.guilds["987654321"].autorole.enabled is True
 
 def test_invalid_config_missing_fields():
     # pydantic v2 will initialize default fields for BotConfig if empty dict is supplied
     # but let's supply invalid values (like wrong types) to trigger ValidationError
-    invalid = {"autorole": {"enabled": "not-a-bool"}}
+    invalid = {"guilds": {"123": {"autorole": {"enabled": "not-a-bool"}}}}
     with pytest.raises(ValidationError):
         BotConfig(**invalid)
 

@@ -1,50 +1,68 @@
 <!-- Header -->
-<header class="h-16 glass-panel border-b border-white/5 flex items-center justify-between px-6 shrink-0 z-10">
+<header class="h-16 border-b border-white/[0.06] flex items-center justify-between px-6 shrink-0 z-10"
+        style="background: rgba(9, 13, 24, 0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);">
     <div class="flex items-center gap-4">
         <!-- Mobile menu button -->
-        <button class="md:hidden text-muted hover:text-white">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        <button class="md:hidden text-muted hover:text-white transition-colors duration-150">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
         </button>
-        <h2 class="text-xl font-semibold">{{ page_title|default('Dashboard') }}</h2>
+        <h2 class="text-lg font-bold text-white tracking-tight">{{ page_title|default('Dashboard') }}</h2>
     </div>
     
-    <div class="flex items-center gap-4">
+    <div class="flex items-center gap-5">
         
         <!-- Server Selector Dropdown -->
         <div class="server-selector" x-data="{ open: false }" @click.away="open = false">
-          <button class="server-dropdown-btn" @click="open = !open">
-            {% if current_guild and current_guild.icon %}
-            <img src="{{ current_guild.icon.url }}" alt="Server Icon" class="server-icon">
-            {% else %}
-            <div class="server-icon bg-white/10 flex items-center justify-center text-xs">S</div>
-            {% endif %}
-            <span>{{ current_guild.name if current_guild else 'No Server' }}</span>
-            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-          </button>
-          
-          <div class="server-dropdown-menu hidden" :class="{ 'hidden': !open }" id="serverDropdown">
-            {% for guild in all_guilds %}
-            <a href="/api/guilds/{{ guild.id }}/select" class="server-option {% if current_guild and guild.id == current_guild.id %}active{% endif %}">
-              {% if guild.icon %}
-              <img src="{{ guild.icon.url }}" alt="{{ guild.name }}">
-              {% else %}
-              <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-xs flex-shrink-0">S</div>
-              {% endif %}
-              <span class="truncate">{{ guild.name }}</span>
-              <span class="member-count ml-auto text-xs text-gray-400">{{ guild.member_count }}</span>
-            </a>
-            {% endfor %}
-          </div>
+            <button class="server-dropdown-btn flex items-center gap-2.5 px-4 py-2 bg-white/[0.03] border border-white/[0.06] rounded-xl text-white text-sm font-semibold transition-all duration-200 hover:bg-white/[0.06] hover:border-white/[0.1] active:scale-[0.98]" 
+                    @click="open = !open">
+                {% if current_guild and current_guild.icon %}
+                <img src="{{ current_guild.icon.url }}" alt="Server Icon" class="server-icon w-6 h-6 rounded-full border border-white/10 shadow-sm">
+                {% else %}
+                <div class="server-icon w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 flex items-center justify-center text-[10px] font-bold shadow-sm">S</div>
+                {% endif %}
+                <span class="max-w-[120px] truncate">{{ current_guild.name if current_guild else 'No Server' }}</span>
+                <svg class="w-4 h-4 text-muted/80 transition-transform duration-200" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </button>
+            
+            <div class="server-dropdown-menu hidden absolute right-0 mt-2.5 min-w-[280px] max-h-[380px] overflow-y-auto rounded-2xl border border-white/[0.08] shadow-2xl z-50 transition-all duration-300" 
+                 style="background: rgba(13, 19, 36, 0.95); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); box-shadow: 0 20px 50px rgba(0,0,0,0.5);"
+                 :class="{ 'hidden': !open }" 
+                 id="serverDropdown">
+                <div class="px-4 py-2 border-b border-white/[0.05]">
+                    <span class="text-[10px] font-bold text-muted/40 uppercase tracking-widest">Select Server</span>
+                </div>
+                <div class="py-1.5">
+                    {% for guild in all_guilds %}
+                    <a href="/api/guilds/{{ guild.id }}/select" 
+                       class="server-option flex items-center gap-3 px-4 py-3 hover:bg-white/[0.03] transition-all duration-150 {% if current_guild and guild.id == current_guild.id %}bg-indigo-500/10 border-l-[3px] border-indigo-500{% else %}border-l-[3px] border-transparent{% endif %}">
+                        {% if guild.icon %}
+                        <img src="{{ guild.icon.url }}" alt="{{ guild.name }}" class="w-8 h-8 rounded-full border border-white/10 shadow-sm flex-shrink-0">
+                        {% else %}
+                        <div class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-xs font-bold text-gray-300 flex-shrink-0">S</div>
+                        {% endif %}
+                        <div class="flex flex-col min-w-0">
+                            <span class="text-sm font-semibold text-white truncate">{{ guild.name }}</span>
+                            <span class="text-[10px] text-muted">{{ guild.member_count }} members</span>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
 
         <!-- Status indicator -->
-        <div class="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-success/10 text-success border border-success/20">
-            <div class="w-2 h-2 rounded-full bg-success animate-pulse"></div>
+        <div class="flex items-center gap-2.5 px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-sm">
+            <div class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></div>
+            <div class="w-2 h-2 rounded-full bg-emerald-500 absolute"></div>
             Bot Online
         </div>
         
         <!-- Profile dropdown placeholder -->
-        <div class="w-8 h-8 rounded-full bg-accent/20 border border-accent/30 flex items-center justify-center text-accent font-bold text-sm">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-300 font-bold text-sm shadow-sm hover:border-indigo-500/50 hover:text-indigo-200 transition-all duration-200 cursor-pointer">
             A
         </div>
     </div>
@@ -52,61 +70,18 @@
 <style>
 .server-selector {
   position: relative;
-  margin-right: 10px;
 }
-.server-dropdown-btn {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 16px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 8px;
-  color: white;
-  cursor: pointer;
-  transition: all 0.2s;
+.server-dropdown-menu::-webkit-scrollbar {
+  width: 4px;
 }
-.server-dropdown-btn:hover {
-  background: rgba(255,255,255,0.1);
+.server-dropdown-menu::-webkit-scrollbar-track {
+  background: transparent;
 }
-.server-icon {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
+.server-dropdown-menu::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.08);
+  border-radius: 9999px;
 }
-.server-dropdown-menu {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  margin-top: 8px;
-  background: #0f172a;
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 8px;
-  min-width: 250px;
-  max-height: 400px;
-  overflow-y: auto;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-}
-.server-option {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  color: white;
-  text-decoration: none;
-  transition: background 0.2s;
-}
-.server-option:hover {
-  background: rgba(255,255,255,0.05);
-}
-.server-option.active {
-  background: rgba(99, 102, 241, 0.15);
-  border-left: 3px solid #6366f1;
-}
-.server-option img {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
+.server-dropdown-menu::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.15);
 }
 </style>

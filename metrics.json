@@ -5,11 +5,13 @@
   },
   "862745652060356608": {
     "commands_used_total": 1,
-    "member_joins_24h": 2,
+    "member_joins_24h": 4,
     "queue_depth_current": 0
   },
   "1509338465089617960": {
-    "commands_used_total": 3
+    "commands_used_total": 11,
+    "member_joins_24h": 4,
+    "queue_depth_current": 0
   },
   "1450204870064996384": {
     "commands_used_total": 8

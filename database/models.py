@@ -93,7 +93,8 @@ CREATE TABLE IF NOT EXISTS music_guild_config (
     guild_id TEXT PRIMARY KEY,
     dj_role_id TEXT,
     max_queue_size INTEGER DEFAULT 100,
-    auto_disconnect_minutes INTEGER DEFAULT 5
+    auto_disconnect_minutes INTEGER DEFAULT 5,
+    dashboard_channel_id TEXT
 );
 """
 
@@ -130,6 +131,17 @@ class DatabaseModels:
         async with self.db.begin_transaction() as conn:
             for statement in statements:
                 await conn.execute(statement)
+
+        # Run schema upgrades
+        try:
+            async with self.db.begin_transaction() as conn:
+                await conn.execute("ALTER TABLE music_guild_config ADD COLUMN dashboard_channel_id TEXT;")
+        except sqlite3.OperationalError as e:
+            if "duplicate column name" not in str(e).lower():
+                logger.error(f"Failed to alter music_guild_config table: {e}")
+        except Exception as e:
+            logger.error(f"Failed to alter music_guild_config table: {e}")
+
         logger.info("Database table initialization completed.")
 
     # --- autorole_configs CRUD ---
@@ -280,18 +292,18 @@ class DatabaseModels:
     # --- music CRUD ---
     async def get_music_config(self, guild_id: str) -> Optional[Dict[str, Any]]:
         row = await self.db.fetchone(
-            "SELECT dj_role_id, max_queue_size, auto_disconnect_minutes FROM music_guild_config WHERE guild_id = ?",
+            "SELECT dj_role_id, max_queue_size, auto_disconnect_minutes, dashboard_channel_id FROM music_guild_config WHERE guild_id = ?",
             (guild_id,)
         )
         return dict(row) if row else None
 
-    async def save_music_config(self, guild_id: str, dj_role_id: Optional[str], max_queue_size: int = 100, auto_disconnect_minutes: int = 5) -> None:
+    async def save_music_config(self, guild_id: str, dj_role_id: Optional[str], max_queue_size: int = 100, auto_disconnect_minutes: int = 5, dashboard_channel_id: Optional[str] = None) -> None:
         await self.db.execute(
             """
-            INSERT OR REPLACE INTO music_guild_config (guild_id, dj_role_id, max_queue_size, auto_disconnect_minutes)
-            VALUES (?, ?, ?, ?)
+            INSERT OR REPLACE INTO music_guild_config (guild_id, dj_role_id, max_queue_size, auto_disconnect_minutes, dashboard_channel_id)
+            VALUES (?, ?, ?, ?, ?)
             """,
-            (guild_id, dj_role_id, max_queue_size, auto_disconnect_minutes)
+            (guild_id, dj_role_id, max_queue_size, auto_disconnect_minutes, dashboard_channel_id)
         )
 
     async def save_playlist(self, user_id: str, playlist_name: str, tracks: str) -> None:

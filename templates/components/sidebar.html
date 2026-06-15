@@ -1,60 +1,133 @@
 <!-- Sidebar -->
-<aside class="w-64 bg-card border-r border-white/5 flex flex-col transition-all duration-300 hidden md:flex">
-    <div class="h-16 flex items-center px-6 border-b border-white/5">
-        <div class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
-            {{ bot_name|default('Antigravity') }}
+<aside class="w-66 border-r border-white/[0.06] flex flex-col transition-all duration-300 hidden md:flex" 
+       style="background: rgba(9, 13, 24, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);">
+    <div class="h-16 flex items-center px-6 border-b border-white/[0.06] bg-white/[0.01]">
+        <div class="flex items-center gap-2.5">
+            <!-- Bot Logo Glyph (SVG) -->
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/25">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+            </div>
+            <div class="text-lg font-bold bg-gradient-to-r from-indigo-200 via-indigo-100 to-purple-200 bg-clip-text text-transparent tracking-tight">
+                {{ bot_name|default('Antigravity') }}
+            </div>
         </div>
     </div>
     
-    <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
-        <a href="{{ url_for('status') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-white/5 {% if request.endpoint == 'status' %}bg-accent/10 text-accent{% else %}text-muted hover:text-white{% endif %}">
-            <span>📊</span> Dashboard
-        </a>
-        
-        <div class="pt-4 pb-1">
-            <p class="px-3 text-xs font-semibold text-muted/50 uppercase tracking-wider">Features</p>
+    <nav class="flex-1 overflow-y-auto py-6 px-4 space-y-5 custom-sidebar-nav">
+        <div>
+            <p class="px-3 text-[10px] font-bold text-muted/40 uppercase tracking-widest mb-2">Main</p>
+            <div class="space-y-1">
+                <a href="{{ url_for('status') }}" 
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group {% if request.endpoint == 'status' %}bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 shadow-sm{% else %}text-muted hover:text-white hover:bg-white/[0.02] border border-transparent{% endif %}">
+                    <svg class="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110 {% if request.endpoint == 'status' %}text-indigo-400{% else %}text-muted/70 group-hover:text-indigo-300{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                    Dashboard
+                </a>
+            </div>
         </div>
         
-        <a href="{{ url_for('admin_autorole') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-white/5 {% if request.endpoint == 'admin_autorole' %}bg-accent/10 text-accent{% else %}text-muted hover:text-white{% endif %}">
-            <span>🤖</span> Auto-Role
-        </a>
-        <a href="{{ url_for('admin_music') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-white/5 {% if request.endpoint == 'admin_music' %}bg-accent/10 text-accent{% else %}text-muted hover:text-white{% endif %}">
-            <span>🎵</span> Music
-        </a>
-        <a href="{{ url_for('admin_welcome') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-white/5 {% if request.endpoint == 'admin_welcome' %}bg-accent/10 text-accent{% else %}text-muted hover:text-white{% endif %}">
-            <span>👋</span> Welcome
-        </a>
-        <a href="{{ url_for('admin_verification') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-white/5 {% if request.endpoint == 'admin_verification' %}bg-accent/10 text-accent{% else %}text-muted hover:text-white{% endif %}">
-            <span>✅</span> Verification
-        </a>
-        <a href="{{ url_for('admin_reaction_roles') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-white/5 {% if request.endpoint == 'admin_reaction_roles' %}bg-accent/10 text-accent{% else %}text-muted hover:text-white{% endif %}">
-            <span>🎭</span> Reaction Roles
-        </a>
-        <a href="{{ url_for('admin_raid_protection') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-white/5 {% if request.endpoint == 'admin_raid_protection' %}bg-accent/10 text-accent{% else %}text-muted hover:text-white{% endif %}">
-            <span>🛡️</span> Raid Protection
-        </a>
-        
-        <div class="pt-4 pb-1">
-            <p class="px-3 text-xs font-semibold text-muted/50 uppercase tracking-wider">System</p>
+        <div>
+            <p class="px-3 text-[10px] font-bold text-muted/40 uppercase tracking-widest mb-2">Features</p>
+            <div class="space-y-1">
+                <a href="{{ url_for('admin_autorole') }}" 
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group {% if request.endpoint == 'admin_autorole' %}bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 shadow-sm{% else %}text-muted hover:text-white hover:bg-white/[0.02] border border-transparent{% endif %}">
+                    <svg class="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110 {% if request.endpoint == 'admin_autorole' %}text-indigo-400{% else %}text-muted/70 group-hover:text-indigo-300{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v-2M15 19v-2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                    </svg>
+                    Auto-Role
+                </a>
+                
+                <a href="{{ url_for('admin_music') }}" 
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group {% if request.endpoint == 'admin_music' %}bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 shadow-sm{% else %}text-muted hover:text-white hover:bg-white/[0.02] border border-transparent{% endif %}">
+                    <svg class="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110 {% if request.endpoint == 'admin_music' %}text-indigo-400{% else %}text-muted/70 group-hover:text-indigo-300{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+                    </svg>
+                    Music
+                </a>
+                
+                <a href="{{ url_for('admin_welcome') }}" 
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group {% if request.endpoint == 'admin_welcome' %}bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 shadow-sm{% else %}text-muted hover:text-white hover:bg-white/[0.02] border border-transparent{% endif %}">
+                    <svg class="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110 {% if request.endpoint == 'admin_welcome' %}text-indigo-400{% else %}text-muted/70 group-hover:text-indigo-300{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Welcome
+                </a>
+                
+                <a href="{{ url_for('admin_verification') }}" 
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group {% if request.endpoint == 'admin_verification' %}bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 shadow-sm{% else %}text-muted hover:text-white hover:bg-white/[0.02] border border-transparent{% endif %}">
+                    <svg class="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110 {% if request.endpoint == 'admin_verification' %}text-indigo-400{% else %}text-muted/70 group-hover:text-indigo-300{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                    </svg>
+                    Verification
+                </a>
+                
+                <a href="{{ url_for('admin_reaction_roles') }}" 
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group {% if request.endpoint == 'admin_reaction_roles' %}bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 shadow-sm{% else %}text-muted hover:text-white hover:bg-white/[0.02] border border-transparent{% endif %}">
+                    <svg class="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110 {% if request.endpoint == 'admin_reaction_roles' %}text-indigo-400{% else %}text-muted/70 group-hover:text-indigo-300{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                    Reaction Roles
+                </a>
+                
+                <a href="{{ url_for('admin_raid_protection') }}" 
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group {% if request.endpoint == 'admin_raid_protection' %}bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 shadow-sm{% else %}text-muted hover:text-white hover:bg-white/[0.02] border border-transparent{% endif %}">
+                    <svg class="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110 {% if request.endpoint == 'admin_raid_protection' %}text-indigo-400{% else %}text-muted/70 group-hover:text-indigo-300{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.618 5.984A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                    </svg>
+                    Raid Protection
+                </a>
+            </div>
         </div>
-
-        <a href="{{ url_for('admin_members') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-white/5 {% if request.endpoint == 'admin_members' %}bg-accent/10 text-accent{% else %}text-muted hover:text-white{% endif %}">
-            <span>👥</span> Members
-        </a>
-        <a href="{{ url_for('admin_audit_logs') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-white/5 {% if request.endpoint == 'admin_audit_logs' %}bg-accent/10 text-accent{% else %}text-muted hover:text-white{% endif %}">
-            <span>📜</span> Audit Logs
-        </a>
-        <a href="{{ url_for('admin_commands') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-white/5 {% if request.endpoint == 'admin_commands' %}bg-accent/10 text-accent{% else %}text-muted hover:text-white{% endif %}">
-            <span>⌨️</span> Commands
-        </a>
-        <a href="{{ url_for('admin_settings') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-white/5 {% if request.endpoint == 'admin_settings' %}bg-accent/10 text-accent{% else %}text-muted hover:text-white{% endif %}">
-            <span>⚙️</span> Settings
-        </a>
+        
+        <div>
+            <p class="px-3 text-[10px] font-bold text-muted/40 uppercase tracking-widest mb-2">System</p>
+            <div class="space-y-1">
+                <a href="{{ url_for('admin_members') }}" 
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group {% if request.endpoint == 'admin_members' %}bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 shadow-sm{% else %}text-muted hover:text-white hover:bg-white/[0.02] border border-transparent{% endif %}">
+                    <svg class="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110 {% if request.endpoint == 'admin_members' %}text-indigo-400{% else %}text-muted/70 group-hover:text-indigo-300{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    Members
+                </a>
+                
+                <a href="{{ url_for('admin_audit_logs') }}" 
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group {% if request.endpoint == 'admin_audit_logs' %}bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 shadow-sm{% else %}text-muted hover:text-white hover:bg-white/[0.02] border border-transparent{% endif %}">
+                    <svg class="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110 {% if request.endpoint == 'admin_audit_logs' %}text-indigo-400{% else %}text-muted/70 group-hover:text-indigo-300{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    Audit Logs
+                </a>
+                
+                <a href="{{ url_for('admin_commands') }}" 
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group {% if request.endpoint == 'admin_commands' %}bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 shadow-sm{% else %}text-muted hover:text-white hover:bg-white/[0.02] border border-transparent{% endif %}">
+                    <svg class="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110 {% if request.endpoint == 'admin_commands' %}text-indigo-400{% else %}text-muted/70 group-hover:text-indigo-300{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    Commands
+                </a>
+                
+                <a href="{{ url_for('admin_settings') }}" 
+                   class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group {% if request.endpoint == 'admin_settings' %}bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 shadow-sm{% else %}text-muted hover:text-white hover:bg-white/[0.02] border border-transparent{% endif %}">
+                    <svg class="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110 {% if request.endpoint == 'admin_settings' %}text-indigo-400{% else %}text-muted/70 group-hover:text-indigo-300{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    Settings
+                </a>
+            </div>
+        </div>
     </nav>
     
-    <div class="p-4 border-t border-white/5">
-        <a href="{{ url_for('logout') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-danger hover:bg-danger/10 transition-colors">
-            <span>🚪</span> Logout
+    <div class="p-4 border-t border-white/[0.06] bg-white/[0.01]">
+        <a href="{{ url_for('logout') }}" 
+           class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 border border-transparent hover:border-rose-500/20 transition-all duration-200 group">
+            <svg class="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+            </svg>
+            Logout
         </a>
     </div>
 </aside>

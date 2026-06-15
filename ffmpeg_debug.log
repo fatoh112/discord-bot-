@@ -1,0 +1,4 @@
+[tcp @ 0000028d723a0700] Failed to resolve hostname test: The name does not resolve for the supplied parameters
+[in#0 @ 0000028d7239fc00] Error opening input: I/O error
+Error opening input file http://test.
+Error opening input files: I/O error

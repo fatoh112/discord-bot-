@@ -9,6 +9,11 @@ if hasattr(sys.stderr, 'reconfigure'):
 import os
 import json
 import signal
+
+# Ensure local node directory is in PATH so yt-dlp can find the JS runtime
+node_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "node")
+if os.path.exists(node_path) and node_path not in os.environ["PATH"]:
+    os.environ["PATH"] = node_path + os.pathsep + os.environ["PATH"]
 import asyncio
 import traceback
 import psutil
@@ -27,6 +32,11 @@ from metrics import MetricsTracker
 load_dotenv()
 
 # --- Logging Setup ---
+import datetime
+run_timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+bot_log_filename = f"logs/bot_{run_timestamp}.log"
+errors_log_filename = f"logs/errors_{run_timestamp}.log"
+
 os.makedirs("logs", exist_ok=True)
 logger.remove()  # Remove default handler
 
@@ -35,9 +45,10 @@ logger.add(sys.stdout, level="INFO", format="<green>{time:YYYY-MM-DD HH:mm:ss}</
 
 # Log to general log file
 logger.add(
-    "logs/bot.log",
-    rotation="10 MB",
+    bot_log_filename,
+    rotation="00:00",
     retention=5,
+    enqueue=True,
     level="DEBUG",
     format="{time:YYYY-MM-DD HH:mm:ss} | {level: <8} | {name}:{function}:{line} - {message}"
 )
@@ -46,18 +57,20 @@ logger.add(
 import logging
 discord_logger = logging.getLogger('discord')
 discord_logger.setLevel(logging.DEBUG)
-handler = logging.FileHandler(filename='logs/bot.log', encoding='utf-8', mode='a')
+handler = logging.FileHandler(filename=bot_log_filename, encoding='utf-8', mode='a')
 handler.setFormatter(logging.Formatter('%(asctime)s | %(levelname)-8s | %(name)s | %(message)s'))
 discord_logger.addHandler(handler)
 
 # Log to errors file
 logger.add(
-    "logs/errors.log",
-    rotation="10 MB",
+    errors_log_filename,
+    rotation="00:00",
     retention=5,
+    enqueue=True,
     level="ERROR",
     format="{time:YYYY-MM-DD HH:mm:ss} | {level: <8} | {name}:{function}:{line} - {message}\n{exception}"
 )
+
 
 
 class AntigravityBot(commands.Bot):
@@ -118,11 +131,6 @@ class AntigravityBot(commands.Bot):
                 logger.error(traceback.format_exc())
                 raise  # Re-raise to stop bot if cog fails
 
-        # Start dashboard background thread task
-        from dashboard import start_dashboard
-        task = asyncio.create_task(start_dashboard(self))
-        self.active_tasks.add(task)
-        task.add_done_callback(self.active_tasks.discard)
 
         # THEN sync commands with Discord (MUST be after cog loading)
         logger.info("🔄 Syncing slash commands with Discord...")
@@ -192,8 +200,8 @@ class AntigravityBot(commands.Bot):
         try:
             # Gather last 100 log entries
             log_entries = []
-            if os.path.exists("logs/bot.log"):
-                with open("logs/bot.log", "r", encoding="utf-8") as f:
+            if os.path.exists(bot_log_filename):
+                with open(bot_log_filename, "r", encoding="utf-8") as f:
                     log_entries = f.readlines()[-100:]
 
             # Get system usage details
