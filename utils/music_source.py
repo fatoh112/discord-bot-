@@ -20,6 +20,8 @@ ytdl_format_options = {
     'default_search': 'auto',
     'socket_timeout': 15,
     'source_address': '0.0.0.0',  # bind to ipv4 since ipv6 addresses cause issues sometimes
+    'cookiefile': 'cookies.txt',
+    'extractor_args': {'youtube': {'player_client': ['web']}},
 }
 
 ffmpeg_options = {
