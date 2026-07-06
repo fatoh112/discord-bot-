@@ -24,7 +24,7 @@ def get_cookie_file():
         temp_file.write(cookie_content)
         return temp_file.name
 
-cookie_path = get_cookie_file()
+
 
 # Debug system environment for yt-dlp
 try:
@@ -66,8 +66,7 @@ ytdl_format_options = {
     }
 }
 
-if cookie_path:
-    ytdl_format_options['cookiefile'] = cookie_path
+
 
 ffmpeg_options = {
     'options': '-vn',
@@ -144,8 +143,12 @@ class YTDLSource(discord.PCMVolumeTransformer):
             # Fetch info
             logger.info(f"Starting yt-dlp extract_info for query: {query}")
             def extract():
-                with yt_dlp.YoutubeDL(ytdl_format_options) as ytdl:
-                    return ytdl.extract_info(query, download=not stream)
+                current_options = ytdl_format_options.copy()
+                active_cookie_path = get_cookie_file()
+                if active_cookie_path:
+                    current_options['cookiefile'] = active_cookie_path
+                with yt_dlp.YoutubeDL(current_options) as ydl:
+                    return ydl.extract_info(query, download=not stream)
                     
             data = await loop.run_in_executor(None, extract)
             logger.info(f"Finished yt-dlp extract_info for query: {query}")
@@ -175,8 +178,12 @@ class YTDLSource(discord.PCMVolumeTransformer):
                 webpage_url = data.get('webpage_url') or data.get('url')
                 logger.info(f"Refetching stream URL for {webpage_url}")
                 def extract():
-                    with yt_dlp.YoutubeDL(ytdl_format_options) as ytdl:
-                        return ytdl.extract_info(webpage_url, download=False)
+                    current_options = ytdl_format_options.copy()
+                    active_cookie_path = get_cookie_file()
+                    if active_cookie_path:
+                        current_options['cookiefile'] = active_cookie_path
+                    with yt_dlp.YoutubeDL(current_options) as ydl:
+                        return ydl.extract_info(webpage_url, download=False)
                 new_data = await loop.run_in_executor(None, extract)
                 stream_url = new_data.get('url')
                 data['http_headers'] = new_data.get('http_headers', {})
