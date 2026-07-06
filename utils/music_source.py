@@ -21,6 +21,11 @@ def get_cookie_file() -> Optional[str]:
     raw_cookies = os.environ.get("YOUTUBE_COOKIES")
     if raw_cookies:
         try:
+            # Clean up the cookies string and ensure the Netscape header exists
+            raw_cookies = raw_cookies.strip()
+            if not raw_cookies.startswith("# Netscape HTTP Cookie File"):
+                raw_cookies = "# Netscape HTTP Cookie File\n" + raw_cookies
+            
             # Write it to a temporary file
             temp_cookie_file = tempfile.NamedTemporaryFile(delete=False, suffix=".txt", mode="w", encoding="utf-8")
             temp_cookie_file.write(raw_cookies)
@@ -46,6 +51,15 @@ def get_cookie_file() -> Optional[str]:
     return None
 
 cookie_path = get_cookie_file()
+
+# Debug system environment for yt-dlp
+try:
+    import shutil
+    logger.info(f"System Check - yt-dlp version: {yt_dlp.__version__}")
+    logger.info(f"System Check - Node.js path: {shutil.which('node')}")
+    logger.info(f"System Check - FFmpeg path: {shutil.which('ffmpeg')}")
+except Exception as e:
+    logger.error(f"Error logging system diagnostics: {e}")
 
 ytdl_format_options = {
     'format': 'bestaudio/best',
