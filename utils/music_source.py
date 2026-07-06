@@ -1,11 +1,51 @@
 import asyncio
+import os
+import tempfile
 import discord
 import yt_dlp
 from loguru import logger
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 
 # Suppress noise about console usage from errors
 yt_dlp.utils.bug_reports_message = lambda *args, **kwargs: ''
+
+def get_cookie_file() -> Optional[str]:
+    """Resolves the path to the YouTube cookies file, supporting env vars and local files."""
+    # 1. Check if a cookie file path is specified via environment variable
+    env_cookie_path = os.environ.get("YOUTUBE_COOKIE_PATH")
+    if env_cookie_path and os.path.exists(env_cookie_path):
+        logger.info(f"Using YouTube cookie file from YOUTUBE_COOKIE_PATH: {env_cookie_path}")
+        return env_cookie_path
+
+    # 2. Check if raw Netscape cookie content is provided via environment variable
+    raw_cookies = os.environ.get("YOUTUBE_COOKIES")
+    if raw_cookies:
+        try:
+            # Write it to a temporary file
+            temp_cookie_file = tempfile.NamedTemporaryFile(delete=False, suffix=".txt", mode="w", encoding="utf-8")
+            temp_cookie_file.write(raw_cookies)
+            temp_cookie_file.close()
+            logger.info(f"Created temporary cookies file from YOUTUBE_COOKIES env var: {temp_cookie_file.name}")
+            return temp_cookie_file.name
+        except Exception as e:
+            logger.error(f"Error writing YOUTUBE_COOKIES environment variable to file: {e}")
+
+    # 3. Check for a local cookies.txt file in the workspace root
+    local_cookies = "cookies.txt"
+    if os.path.exists(local_cookies):
+        logger.info(f"Using local cookie file: {local_cookies}")
+        return local_cookies
+
+    # 4. Check for local cookies.txt in the same directory as this file
+    dir_cookies = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cookies.txt")
+    if os.path.exists(dir_cookies):
+        logger.info(f"Using cookie file: {dir_cookies}")
+        return dir_cookies
+
+    logger.warning("No YouTube cookies found. yt-dlp might fail with bot-detection checks on cloud servers.")
+    return None
+
+cookie_path = get_cookie_file()
 
 ytdl_format_options = {
     'format': 'bestaudio/best',
@@ -23,6 +63,9 @@ ytdl_format_options = {
     'cookiefile': 'cookies.txt',
     'extractor_args': {'youtube': {'player_client': ['web']}},
 }
+
+if cookie_path:
+    ytdl_format_options['cookiefile'] = cookie_path
 
 ffmpeg_options = {
     'options': '-vn',
