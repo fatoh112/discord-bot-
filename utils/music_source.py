@@ -11,7 +11,6 @@ from typing import Dict, Any, List, Optional
 yt_dlp.utils.bug_reports_message = lambda *args, **kwargs: ''
 
 
-
 def get_cookie_file():
     raw_cookies = os.getenv("YOUTUBE_COOKIES", "")
     try:
@@ -23,7 +22,6 @@ def get_cookie_file():
     with tempfile.NamedTemporaryFile(delete=False, suffix=".txt", mode="w", encoding="utf-8") as temp_file:
         temp_file.write(cookie_content)
         return temp_file.name
-
 
 
 # Debug system environment for yt-dlp
@@ -60,7 +58,7 @@ ytdl_format_options = {
     'cookiefile': 'cookies.txt',
     'extractor_args': {
         'youtube': {
-            'player_client': ['web'],
+            'player_client': ['web', 'mweb', 'android'],
             'formats': ['missing_pot']
         }
     },
@@ -68,7 +66,6 @@ ytdl_format_options = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
     }
 }
-
 
 
 ffmpeg_options = {
@@ -160,49 +157,3 @@ class YTDLSource(discord.PCMVolumeTransformer):
                 # It's a playlist or search result
                 entries = data['entries']
                 if is_search:
-                    # Take only the first search result
-                    entries = [entries[0]] if entries else []
-                return entries
-            else:
-                return [data]
-        except Exception as e:
-            logger.error(f"Error extracting info for {url}: {e}")
-            raise e
-
-    @classmethod
-    async def create_source(cls, data: dict, ffmpeg_path: str = "ffmpeg", volume: float = 1.0, loop: asyncio.AbstractEventLoop = None):
-        """Creates an audio source from pre-fetched data."""
-        stream_url = data.get('url')
-        
-        # If the URL is missing or it's a search result (urls expire quickly), refetch just before playing
-        if not stream_url or data.get('is_search') or data.get('extractor_key') == 'YoutubeSearch':
-            loop = loop or asyncio.get_event_loop()
-            try:
-                webpage_url = data.get('webpage_url') or data.get('url')
-                logger.info(f"Refetching stream URL for {webpage_url}")
-                def extract():
-                    current_options = ytdl_format_options.copy()
-                    active_cookie_path = get_cookie_file()
-                    if active_cookie_path:
-                        current_options['cookiefile'] = active_cookie_path
-                    with yt_dlp.YoutubeDL(current_options) as ydl:
-                        return ydl.extract_info(webpage_url, download=False)
-                new_data = await loop.run_in_executor(None, extract)
-                stream_url = new_data.get('url')
-                data['http_headers'] = new_data.get('http_headers', {})
-            except Exception as e:
-                logger.error(f"Failed to refetch stream url: {e}")
-
-        if not stream_url:
-            raise ValueError("Stream URL not found in extracted data")
-            
-        opts = ffmpeg_options.copy()
-        headers = data.get('http_headers', {})
-        if headers:
-            headers_str = "".join([f"{k}: {v}\r\n" for k, v in headers.items()])
-            opts['before_options'] = f'-headers "{headers_str}" ' + opts.get('before_options', '')
-            
-        import subprocess
-        # Avoid file handle leak
-        source = discord.FFmpegPCMAudio(stream_url, executable=ffmpeg_path, **opts)
-        return cls(source, data=data, volume=volume)
