@@ -99,12 +99,6 @@ class YTDLSource(discord.PCMVolumeTransformer):
 
     @classmethod
     async def from_url(cls, url: str, *, loop: asyncio.AbstractEventLoop = None, stream: bool = True, ffmpeg_path: str = "ffmpeg") -> List[Any]:
-        """
-        Extracts info from a URL or search query.
-        Returns a list of YTDLSource objects (or dicts if not streaming yet).
-        For simplicity, we return the data dicts to create sources right before playback,
-        so the stream URL doesn't expire.
-        """
         loop = loop or asyncio.get_event_loop()
         
         # Resolve Spotify track links to search query
@@ -157,3 +151,47 @@ class YTDLSource(discord.PCMVolumeTransformer):
                 # It's a playlist or search result
                 entries = data['entries']
                 if is_search:
+                    # Take only the first search result
+                    entries = [entries[0]] if entries else []
+                return entries
+            else:
+                return [data]
+        except Exception as e:
+            logger.error(f"Error extracting info for {url}: {e}")
+            raise e
+
+    @classmethod
+    async def create_source(cls, data: dict, ffmpeg_path: str = "ffmpeg", volume: float = 1.0, loop: asyncio.AbstractEventLoop = None):
+        """Creates an audio source from pre-fetched data."""
+        stream_url = data.get('url')
+        
+        # If the URL is missing or it's a search result (urls expire quickly), refetch just before playing
+        if not stream_url or data.get('is_search') or data.get('extractor_key') == 'YoutubeSearch':
+            loop = loop or asyncio.get_event_loop()
+            try:
+                webpage_url = data.get('webpage_url') or data.get('url')
+                logger.info(f"Refetching stream URL for {webpage_url}")
+                def extract():
+                    current_options = ytdl_format_options.copy()
+                    active_cookie_path = get_cookie_file()
+                    if active_cookie_path:
+                        current_options['cookiefile'] = active_cookie_path
+                    with yt_dlp.YoutubeDL(current_options) as ydl:
+                        return ydl.extract_info(webpage_url, download=False)
+                new_data = await loop.run_in_executor(None, extract)
+                stream_url = new_data.get('url')
+                data['http_headers'] = new_data.get('http_headers', {})
+            except Exception as e:
+                logger.error(f"Failed to refetch stream url: {e}")
+
+        if not stream_url:
+            raise ValueError("Stream URL not found in extracted data")
+            
+        opts = ffmpeg_options.copy()
+        headers = data.get('http_headers', {})
+        if headers:
+            headers_str = "".join([f"{k}: {v}\r\n" for k, v in headers.items()])
+            opts['before_options'] = f'-headers "{headers_str}" ' + opts.get('before_options', '')
+            
+        source = discord.FFmpegPCMAudio(stream_url, executable=ffmpeg_path, **opts)
+        return cls(source, data=data, volume=volume)
