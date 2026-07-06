@@ -1,6 +1,7 @@
 import asyncio
 import os
 import tempfile
+import base64
 import discord
 import yt_dlp
 from loguru import logger
@@ -41,6 +42,21 @@ def get_cookie_file() -> Optional[str]:
     raw_cookies = os.environ.get("YOUTUBE_COOKIES")
     if raw_cookies:
         try:
+            raw_cookies = raw_cookies.strip()
+            
+            # Check if YOUTUBE_COOKIES is base64 encoded
+            try:
+                # Validate and decode base64
+                decoded_bytes = base64.b64decode(raw_cookies, validate=True)
+                decoded_str = decoded_bytes.decode('utf-8')
+                # Check if it has hallmarks of a Netscape cookie file
+                if "# Netscape" in decoded_str or ".youtube.com" in decoded_str:
+                    logger.info("Detected Base64-encoded YOUTUBE_COOKIES. Decoded successfully.")
+                    raw_cookies = decoded_str
+            except Exception:
+                # If not base64 or decoding fails, keep raw_cookies as is
+                pass
+            
             # Normalize cookies format and write it to a temporary file
             normalized = normalize_cookies(raw_cookies)
             temp_cookie_file = tempfile.NamedTemporaryFile(delete=False, suffix=".txt", mode="w", encoding="utf-8")
