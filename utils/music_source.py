@@ -58,8 +58,11 @@ ytdl_format_options = {
     'cookiefile': 'cookies.txt',
     'extractor_args': {
         'youtube': {
-            'player_client': ['web', 'mweb', 'android'],
+            'player_client': ['web'],
             'formats': ['missing_pot']
+        },
+        'youtubetab': {
+            'skip': ['authcheck']
         }
     },
     'http_headers': {
