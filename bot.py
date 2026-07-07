@@ -2,16 +2,23 @@ import os
 import subprocess
 import sys
 
+# Auto-install ffmpeg-downloader and ffmpeg binary
 try:
-    import ffdl
+    try:
+        import ffdl
+    except ImportError:
+        print("Installing ffmpeg-downloader package...")
+        subprocess.run([sys.executable, "-m", "pip", "install", "ffmpeg-downloader"], check=True)
+        import ffdl
+
     if not os.path.exists("ffmpeg") and not os.path.exists("ffmpeg.exe"):
-        print("Downloading FFmpeg...")
+        print("Downloading FFmpeg binary...")
         subprocess.run(["ffdl", "install"], check=True)
         current_dir = os.path.abspath(os.path.dirname(__file__))
         os.environ["PATH"] += os.pathsep + current_dir
+        print("FFmpeg downloaded and added to PATH successfully!")
 except Exception as e:
-    print(f"FFmpeg auto-install status: {e}")
-import sys
+    print(f"FFmpeg auto-install failed critically: {e}")
 
 # Force UTF-8 output on Windows to handle emoji in bot names/messages
 if hasattr(sys.stdout, 'reconfigure'):
