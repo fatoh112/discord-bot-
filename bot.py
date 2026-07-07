@@ -1,3 +1,16 @@
+import os
+import subprocess
+import sys
+
+try:
+    import ffdl
+    if not os.path.exists("ffmpeg") and not os.path.exists("ffmpeg.exe"):
+        print("Downloading FFmpeg...")
+        subprocess.run(["ffdl", "install"], check=True)
+        current_dir = os.path.abspath(os.path.dirname(__file__))
+        os.environ["PATH"] += os.pathsep + current_dir
+except Exception as e:
+    print(f"FFmpeg auto-install status: {e}")
 import sys
 
 # Force UTF-8 output on Windows to handle emoji in bot names/messages
