@@ -1,25 +1,43 @@
 import os
-import subprocess
 import sys
+import urllib.request
+import tarfile
+import subprocess
 
-# Auto-install ffmpeg-downloader and ffmpeg binary
-try:
-    try:
-        import ffdl
-    except ImportError:
-        print("Installing ffmpeg-downloader package...")
-        subprocess.run([sys.executable, "-m", "pip", "install", "ffmpeg-downloader"], check=True)
-        import ffdl
+# Native FFmpeg Auto-Installer for Railway (Linux)
+def setup_ffmpeg_native():
+    ffmpeg_bin = os.path.join(os.getcwd(), "ffmpeg")
+    if not os.path.exists(ffmpeg_bin):
+        print("Downloading official Linux FFmpeg binary...")
+        try:
+            url = "https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz"
+            archive_path = "ffmpeg.tar.xz"
+            
+            urllib.request.urlretrieve(url, archive_path)
+            print("Extracting FFmpeg package...")
+            
+            with tarfile.open(archive_path, "r:xz") as tar:
+                tar.extractall()
+            
+            for root, dirs, files in os.walk("."):
+                if "ffmpeg" in files and "ffmpeg-release" in root:
+                    src_ffmpeg = os.path.join(root, "ffmpeg")
+                    src_ffprobe = os.path.join(root, "ffprobe")
+                    os.rename(src_ffmpeg, "./ffmpeg")
+                    os.rename(src_ffprobe, "./ffprobe")
+                    break
+            
+            subprocess.run(["chmod", "+x", "./ffmpeg", "./ffprobe"], check=True)
+            if os.path.exists(archive_path):
+                os.remove(archive_path)
+            print("FFmpeg setup completed successfully!")
+        except Exception as err:
+            print(f"Failed to setup FFmpeg natively: {err}")
 
-    if not os.path.exists("ffmpeg") and not os.path.exists("ffmpeg.exe"):
-        print("Downloading FFmpeg binary...")
-        subprocess.run(["ffdl", "install"], check=True)
-        current_dir = os.path.abspath(os.path.dirname(__file__))
-        os.environ["PATH"] += os.pathsep + current_dir
-        print("FFmpeg downloaded and added to PATH successfully!")
-except Exception as e:
-    print(f"FFmpeg auto-install failed critically: {e}")
+setup_ffmpeg_native()
 
+current_dir = os.path.abspath(os.path.dirname(__file__))
+os.environ["PATH"] = current_dir + os.pathsep + os.environ.get("PATH", "")
 # Force UTF-8 output on Windows to handle emoji in bot names/messages
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
