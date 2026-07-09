@@ -3,6 +3,7 @@ import sys
 import urllib.request
 import tarfile
 import subprocess
+import shutil
 
 # Native FFmpeg Auto-Installer for Railway (Linux)
 def setup_ffmpeg_native():
@@ -16,21 +17,29 @@ def setup_ffmpeg_native():
             urllib.request.urlretrieve(url, archive_path)
             print("Extracting FFmpeg package...")
             
+            # Extract archive
             with tarfile.open(archive_path, "r:xz") as tar:
-                tar.extractall()
+                tar.extractall(filter='data') if hasattr(tarfile, 'data_filter') else tar.extractall()
             
+            # Dynamically locate ffmpeg and ffprobe anywhere in extracted dirs
+            found_ffmpeg = None
+            found_ffprobe = None
             for root, dirs, files in os.walk("."):
-                if "ffmpeg" in files and "ffmpeg-release" in root:
-                    src_ffmpeg = os.path.join(root, "ffmpeg")
-                    src_ffprobe = os.path.join(root, "ffprobe")
-                    os.rename(src_ffmpeg, "./ffmpeg")
-                    os.rename(src_ffprobe, "./ffprobe")
-                    break
-            
-            subprocess.run(["chmod", "+x", "./ffmpeg", "./ffprobe"], check=True)
+                if "ffmpeg" in files and root != ".":
+                    found_ffmpeg = os.path.join(root, "ffmpeg")
+                if "ffprobe" in files and root != ".":
+                    found_ffprobe = os.path.join(root, "ffprobe")
+
+            if found_ffmpeg and found_ffprobe:
+                shutil.move(found_ffmpeg, "./ffmpeg")
+                shutil.move(found_ffprobe, "./ffprobe")
+                subprocess.run(["chmod", "+x", "./ffmpeg", "./ffprobe"], check=True)
+                print("FFmpeg setup completed successfully!")
+            else:
+                print("Could not locate extracted ffmpeg/ffprobe binaries.")
+
             if os.path.exists(archive_path):
                 os.remove(archive_path)
-            print("FFmpeg setup completed successfully!")
         except Exception as err:
             print(f"Failed to setup FFmpeg natively: {err}")
 
@@ -38,7 +47,6 @@ setup_ffmpeg_native()
 
 current_dir = os.path.abspath(os.path.dirname(__file__))
 os.environ["PATH"] = current_dir + os.pathsep + os.environ.get("PATH", "")
-# Force UTF-8 output on Windows to handle emoji in bot names/messages
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 if hasattr(sys.stderr, 'reconfigure'):
