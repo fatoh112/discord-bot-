@@ -53,7 +53,7 @@ ytdl_format_options = {
     'logtostderr': False,
     'quiet': True,
     'no_warnings': True,
-    'default_search': 'auto',
+   'default_search': 'scsearch',
     'source_address': '0.0.0.0',
     'cookiefile': 'cookies.txt',
     'extractor_args': {
