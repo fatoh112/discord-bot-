@@ -4,12 +4,12 @@ import tempfile
 import base64
 import discord
 import yt_dlp
+import shutil
 from loguru import logger
 from typing import Dict, Any, List, Optional
 
 # Suppress noise about console usage from errors
 yt_dlp.utils.bug_reports_message = lambda *args, **kwargs: ''
-
 
 def get_cookie_file():
     raw_cookies = os.getenv("YOUTUBE_COOKIES", "")
@@ -18,58 +18,30 @@ def get_cookie_file():
     except Exception:
         cookie_content = raw_cookies
 
-    import tempfile
     with tempfile.NamedTemporaryFile(delete=False, suffix=".txt", mode="w", encoding="utf-8") as temp_file:
         temp_file.write(cookie_content)
         return temp_file.name
 
-
 # Debug system environment for yt-dlp
 try:
-    import shutil
     logger.info(f"System Check - Node.js path: {shutil.which('node')}")
-    logger.info(f"System Check - FFmpeg path: {shutil.which('ffmpeg')}")
+    logger.info(f"System Check - FFmpeg path: /app/ffmpeg")
 except Exception as e:
-    logger.error(f"Error checking node/ffmpeg path: {e}")
-
-try:
-    import yt_dlp.version
-    logger.info(f"System Check - yt-dlp version: {yt_dlp.version.__version__}")
-except AttributeError:
-    try:
-        logger.info(f"System Check - yt-dlp version: {yt_dlp.__version__}")
-    except Exception as e:
-        logger.error(f"Error checking yt-dlp version: {e}")
-except Exception as e:
-    logger.error(f"Error checking yt-dlp version: {e}")
+    logger.error(f"Error checking path: {e}")
 
 ytdl_format_options = {
-    'format': 'bestaudio',
+    'format': 'bestaudio/best',
     'outtmpl': '%(extractor)s-%(id)s-%(title)s.%(ext)s',
     'restrictfilenames': True,
-    'noplaylist': False,
+    'noplaylist': True,
     'nocheckcertificate': True,
     'ignoreerrors': False,
     'logtostderr': False,
     'quiet': True,
     'no_warnings': True,
-   'default_search': 'scsearch',
-    'source_address': '0.0.0.0',
-    'cookiefile': 'cookies.txt',
-    'extractor_args': {
-        'youtube': {
-            'player_client': ['web'],
-            'formats': ['missing_pot']
-        },
-        'youtubetab': {
-            'skip': ['authcheck']
-        }
-    },
-    'http_headers': {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-    }
+    'default_search': 'scsearch',
+    'source_address': '0.0.0.0'
 }
-
 
 ffmpeg_options = {
     'options': '-vn',
@@ -101,7 +73,13 @@ class YTDLSource(discord.PCMVolumeTransformer):
         return self.reads * 0.02
 
     @classmethod
-    async def from_url(cls, url: str, *, loop: asyncio.AbstractEventLoop = None, stream: bool = True, ffmpeg_path: str = "ffmpeg") -> List[Any]:
+    def _get_ffmpeg_path(cls) -> str:
+        if os.path.exists("/app/ffmpeg"):
+            return "/app/ffmpeg"
+        return shutil.which("ffmpeg") or "ffmpeg"
+
+    @classmethod
+    async def from_url(cls, url: str, *, loop: asyncio.AbstractEventLoop = None, stream: bool = True) -> List[Any]:
         loop = loop or asyncio.get_event_loop()
         
         # Resolve Spotify track links to search query
@@ -129,21 +107,16 @@ class YTDLSource(discord.PCMVolumeTransformer):
                     logger.error(f"Failed to resolve spotify link {url}: {e}")
                     raise e
             else:
-                raise ValueError("Spotify playlists and albums are not supported yet. Please provide a direct track link.")
+                raise ValueError("Spotify playlists and albums are not supported yet.")
 
-        # We need to run extract_info in an executor because it's blocking
+        # التعديل الحاسم: جعل البحث الافتراضي يعتمد على ساوند كلاود وليس يوتيوب
+        is_search = not url.startswith("http")
+        query = f"scsearch:{url}" if is_search else url
+        
         try:
-            # First, check if it's a playlist or search
-            is_search = url.startswith("ytsearch") or not url.startswith("http")
-            query = f"ytsearch:{url}" if is_search and not url.startswith("ytsearch") else url
-            
-            # Fetch info
             logger.info(f"Starting yt-dlp extract_info for query: {query}")
             def extract():
                 current_options = ytdl_format_options.copy()
-                active_cookie_path = get_cookie_file()
-                if active_cookie_path:
-                    current_options['cookiefile'] = active_cookie_path
                 with yt_dlp.YoutubeDL(current_options) as ydl:
                     return ydl.extract_info(query, download=not stream)
                     
@@ -151,10 +124,8 @@ class YTDLSource(discord.PCMVolumeTransformer):
             logger.info(f"Finished yt-dlp extract_info for query: {query}")
             
             if 'entries' in data:
-                # It's a playlist or search result
                 entries = data['entries']
                 if is_search:
-                    # Take only the first search result
                     entries = [entries[0]] if entries else []
                 return entries
             else:
@@ -164,21 +135,16 @@ class YTDLSource(discord.PCMVolumeTransformer):
             raise e
 
     @classmethod
-    async def create_source(cls, data: dict, ffmpeg_path: str = "ffmpeg", volume: float = 1.0, loop: asyncio.AbstractEventLoop = None):
-        """Creates an audio source from pre-fetched data."""
+    async def create_source(cls, data: dict, volume: float = 1.0, loop: asyncio.AbstractEventLoop = None):
         stream_url = data.get('url')
         
-        # If the URL is missing or it's a search result (urls expire quickly), refetch just before playing
-        if not stream_url or data.get('is_search') or data.get('extractor_key') == 'YoutubeSearch':
+        if not stream_url or data.get('is_search') or 'SoundCloud' in data.get('extractor_key', ''):
             loop = loop or asyncio.get_event_loop()
             try:
                 webpage_url = data.get('webpage_url') or data.get('url')
                 logger.info(f"Refetching stream URL for {webpage_url}")
                 def extract():
                     current_options = ytdl_format_options.copy()
-                    active_cookie_path = get_cookie_file()
-                    if active_cookie_path:
-                        current_options['cookiefile'] = active_cookie_path
                     with yt_dlp.YoutubeDL(current_options) as ydl:
                         return ydl.extract_info(webpage_url, download=False)
                 new_data = await loop.run_in_executor(None, extract)
@@ -196,5 +162,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
             headers_str = "".join([f"{k}: {v}\r\n" for k, v in headers.items()])
             opts['before_options'] = f'-headers "{headers_str}" ' + opts.get('before_options', '')
             
-        source = discord.FFmpegPCMAudio(stream_url, executable=ffmpeg_path, **opts)
+        # استخدام مسار FFmpeg الصحيح ديناميكياً
+        resolved_ffmpeg = cls._get_ffmpeg_path()
+        source = discord.FFmpegPCMAudio(stream_url, executable=resolved_ffmpeg, **opts)
         return cls(source, data=data, volume=volume)
