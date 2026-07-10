@@ -16,3 +16,5 @@ bcrypt
 PyNaCl
 static-ffmpeg
 ffmpeg-downloader
+PyNaCl
+discord.py[voice]
