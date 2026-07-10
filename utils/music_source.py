@@ -44,7 +44,7 @@ except Exception as e:
     logger.error(f"Error checking yt-dlp version: {e}")
 
 ytdl_format_options = {
-    'format': 'bestaudio/best',
+    'format': 'bestaudio',
     'outtmpl': '%(extractor)s-%(id)s-%(title)s.%(ext)s',
     'restrictfilenames': True,
     'noplaylist': False,
