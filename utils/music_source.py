@@ -22,7 +22,7 @@ def get_cookie_file():
         temp_file.write(cookie_content)
         return temp_file.name
 
-# Debug system environment for yt-dlp
+# System Environment check
 try:
     logger.info(f"System Check - Node.js path: {shutil.which('node')}")
     logger.info(f"System Check - FFmpeg path: /app/ffmpeg")
@@ -82,34 +82,6 @@ class YTDLSource(discord.PCMVolumeTransformer):
     async def from_url(cls, url: str, *, loop: asyncio.AbstractEventLoop = None, stream: bool = True) -> List[Any]:
         loop = loop or asyncio.get_event_loop()
         
-        # Resolve Spotify track links to search query
-        if "spotify.com" in url:
-            import aiohttp
-            import re
-            if "/track/" in url:
-                try:
-                    logger.info(f"Resolving Spotify track link: {url}")
-                    async with aiohttp.ClientSession() as session:
-                        async with session.get(url, timeout=5) as response:
-                            html = await response.text()
-                            title_match = re.search(r'<title>(.*?)</title>', html)
-                            if title_match:
-                                title = title_match.group(1)
-                                title = title.replace(" - song and lyrics by ", " ")
-                                title = title.replace(" - Single by ", " ")
-                                title = title.replace(" - song by ", " ")
-                                title = title.replace(" | Spotify", "")
-                                logger.info(f"Resolved Spotify link to query: {title}")
-                                url = title
-                            else:
-                                raise ValueError("Could not extract title metadata from Spotify track link")
-                except Exception as e:
-                    logger.error(f"Failed to resolve spotify link {url}: {e}")
-                    raise e
-            else:
-                raise ValueError("Spotify playlists and albums are not supported yet.")
-
-        # التعديل الحاسم: جعل البحث الافتراضي يعتمد على ساوند كلاود وليس يوتيوب
         is_search = not url.startswith("http")
         query = f"scsearch:{url}" if is_search else url
         
@@ -123,10 +95,13 @@ class YTDLSource(discord.PCMVolumeTransformer):
             data = await loop.run_in_executor(None, extract)
             logger.info(f"Finished yt-dlp extract_info for query: {query}")
             
+            if not data:
+                return []
+                
             if 'entries' in data:
                 entries = data['entries']
-                if is_search:
-                    entries = [entries[0]] if entries else []
+                if is_search and entries:
+                    entries = [entries[0]]
                 return entries
             else:
                 return [data]
@@ -138,7 +113,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
     async def create_source(cls, data: dict, volume: float = 1.0, loop: asyncio.AbstractEventLoop = None):
         stream_url = data.get('url')
         
-        if not stream_url or data.get('is_search') or 'SoundCloud' in data.get('extractor_key', ''):
+        if not stream_url:
             loop = loop or asyncio.get_event_loop()
             try:
                 webpage_url = data.get('webpage_url') or data.get('url')
@@ -162,7 +137,6 @@ class YTDLSource(discord.PCMVolumeTransformer):
             headers_str = "".join([f"{k}: {v}\r\n" for k, v in headers.items()])
             opts['before_options'] = f'-headers "{headers_str}" ' + opts.get('before_options', '')
             
-        # استخدام مسار FFmpeg الصحيح ديناميكياً
         resolved_ffmpeg = cls._get_ffmpeg_path()
         source = discord.FFmpegPCMAudio(stream_url, executable=resolved_ffmpeg, **opts)
         return cls(source, data=data, volume=volume)
